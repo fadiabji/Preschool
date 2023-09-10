@@ -2,14 +2,14 @@
 
 namespace Preschool.Services
 {
-    public class StudentService : IStudentService
+    public class TeacherService : ITeacherService
     {
-        public Task<Student> GetStudentById(int id)
+        public Task<Child> GetTeacherById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Student>> GetStudents()
+        public Task<IEnumerable<Child>> GetTeachers()
         {
             throw new NotImplementedException();
         }

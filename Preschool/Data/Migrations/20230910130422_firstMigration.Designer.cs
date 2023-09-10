@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Preschool.Data;
 
@@ -11,13 +12,14 @@ using Preschool.Data;
 namespace Preschool.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230910130422_firstMigration")]
+    partial class firstMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.21")
+                .HasAnnotation("ProductVersion", "6.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -184,8 +186,11 @@ namespace Preschool.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IsActive")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -217,28 +222,6 @@ namespace Preschool.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Classes");
-                });
-
-            modelBuilder.Entity("Preschool.Models.DocumentsImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ChildId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageFile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChildId");
-
-                    b.ToTable("DocumentsImages");
                 });
 
             modelBuilder.Entity("Preschool.Models.Teacher", b =>
@@ -404,19 +387,8 @@ namespace Preschool.Data.Migrations
             modelBuilder.Entity("Preschool.Models.Child", b =>
                 {
                     b.HasOne("Preschool.Models.Class", null)
-                        .WithMany("Childs")
+                        .WithMany("Students")
                         .HasForeignKey("ClassId");
-                });
-
-            modelBuilder.Entity("Preschool.Models.DocumentsImage", b =>
-                {
-                    b.HasOne("Preschool.Models.Child", "Child")
-                        .WithMany("DocumentsImage")
-                        .HasForeignKey("ChildId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Child");
                 });
 
             modelBuilder.Entity("Preschool.Models.Teacher", b =>
@@ -430,14 +402,9 @@ namespace Preschool.Data.Migrations
                     b.Navigation("Class");
                 });
 
-            modelBuilder.Entity("Preschool.Models.Child", b =>
-                {
-                    b.Navigation("DocumentsImage");
-                });
-
             modelBuilder.Entity("Preschool.Models.Class", b =>
                 {
-                    b.Navigation("Childs");
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

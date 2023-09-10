@@ -1,18 +1,29 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Preschool.Data;
+using Preschool.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseLazyLoadingProxies().UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+
+
+//Add Services
+builder.Services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
+builder.Services.AddScoped<IChildService, ChildService>();
+builder.Services.AddScoped<IClassService, ClassService>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();  
+
 
 var app = builder.Build();
 

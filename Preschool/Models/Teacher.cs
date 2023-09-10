@@ -1,21 +1,37 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Preschool.Models
 {
     public class Teacher
     {
         [Required]
-
         public int Id { get; set; }
+
         [Required]
+        [PersonalData]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Required]
+        [PersonalData]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
+        
         [Required]
-        public DateTime BirthDate { get; set; }
+        [PersonalData]
+        [Display(Name = "Date Of Birth")]
+        [DataType(DataType.Date)]
+        public DateTime DateOfBirth { get; set; }
+        
         [Required]
-        public DateTime Registedat { get; set; }
-        public Class Class { get; set; }
+        public DateTime RegistedAt { get; set; }
+
+        public bool  IsActive { get; set; }
+
+        [Required]
+        public int ClassId { get; set; } 
+
+        public virtual Class Class { get; set; }
 
     }
 }
