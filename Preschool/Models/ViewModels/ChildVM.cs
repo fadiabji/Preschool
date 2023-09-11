@@ -48,5 +48,10 @@ namespace Preschool.Models.ViewModels
 
         public List<string> DocumentCopies { get; set; }
 
+        public ChildVM()
+        {
+            DocumentCopies = new List<string>();    
+        }
+
     }
 }

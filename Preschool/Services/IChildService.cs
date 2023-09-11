@@ -13,5 +13,8 @@ namespace Preschool.Services
         void UpdateChildEnrollment(Child child);
 
         public void RemoveChild(Child child);
+
+
+        bool IsExists(int? id);
     }
 }

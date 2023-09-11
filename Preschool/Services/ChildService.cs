@@ -19,9 +19,14 @@ namespace Preschool.Services
         {
             return await _db.Childern.Include(c => c.DocumentsImage).ToListAsync();
         }
+
         public async Task<Child> GetChildById(int? id)
         {
-            return await _db.Childern.Include(c => c.DocumentsImage).SingleOrDefaultAsync(c =>c.Id == id); 
+            return await _db.Childern.Include(c => c.DocumentsImage).SingleOrDefaultAsync(c => c.Id == id);
+            //return await _db.Childern.Include(c => c.DocumentsImage).FirstOrDefaultAsync(x => x.Id == id);
+
+
+
         }
 
         public void EnrollChild(Child child)
@@ -42,8 +47,9 @@ namespace Preschool.Services
             _db.SaveChanges();
         }
 
-
-      
-
+        public bool IsExists(int? id)
+        {
+            return _db.Childern.Any(e => e.Id == id);
+        }
     }
 }

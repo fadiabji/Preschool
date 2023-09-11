@@ -17,12 +17,10 @@ namespace Preschool.Controllers
 {
     public class ChildrenController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IChildService _childrenService;
 
-        public ChildrenController(ApplicationDbContext context, IChildService childService)
+        public ChildrenController( IChildService childService)
         {
-            _context = context;
             _childrenService = childService;
         }
 
@@ -93,17 +91,34 @@ namespace Preschool.Controllers
         // GET: Children/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Childern == null)
+            if (id == null || _childrenService.GetChildren() == null)
             {
                 return NotFound();
             }
 
-            var child = await _context.Childern.FindAsync(id);
+            var child = await _childrenService.GetChildById(id);
             if (child == null)
             {
                 return NotFound();
             }
-            return View(child);
+            ChildVM childVm = new ChildVM()
+            {
+                Id = child.Id,
+                FirstName = child.FirstName,
+                LastName = child.LastName,
+                DateOfBirth = child.DateOfBirth,
+                EnrolDate = child.EnrolDate,
+                IsActive = child.IsActive,
+                FatherName = child.FatherName,
+                MotherName = child.MotherName
+            };
+         
+            foreach ( var docuemnt in child.DocumentsImage)
+            {
+                childVm.DocumentCopies.Add(docuemnt.ImageFile);
+            }
+
+            return View(childVm);
         }
 
         // POST: Children/Edit/5
@@ -111,19 +126,41 @@ namespace Preschool.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,FatherName,MotherName,DateOfBirth,EnrolDate,IsActive")] Child child)
+        public async Task<IActionResult> Edit(int id,  ChildVM childvm, List<IFormFile> DocumentCopies)
         {
+            var child = _childrenService.GetChildById(id).Result;
+            child.Id = childvm.Id;
+            child.FirstName = childvm.FirstName;
+            child.LastName = childvm.LastName;
+            child.FatherName = childvm.FatherName;
+            child.MotherName = childvm.MotherName;
+            child.DateOfBirth = childvm.DateOfBirth;
+            child.EnrolDate = childvm.EnrolDate;
+            child.IsActive = childvm.IsActive;
+            child.DocumentsImage.Clear();
+
             if (id != child.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && DocumentCopies != null)
             {
                 try
                 {
-                    _context.Update(child);
-                    await _context.SaveChangesAsync();
+                    foreach (var img in DocumentCopies)
+                    {
+                        string fileName = img.FileName;
+                        string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\DocumentsCopies"));
+                        using (var filestream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                        { await img.CopyToAsync(filestream); }
+                        if (child.DocumentsImage == null)
+                        {
+                            child.DocumentsImage = new List<DocumentsImage>();
+                        }
+                        child.DocumentsImage.Add(new DocumentsImage { ImageFile = img.FileName });
+                    }
+                    await Task.Run(() => _childrenService.UpdateChildEnrollment(child));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -144,19 +181,20 @@ namespace Preschool.Controllers
         // GET: Children/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Childern == null)
+            try
             {
-                return NotFound();
-            }
+                var child = await _childrenService.GetChildById(id);
+                if (child == null)
+                {
+                    return NotFound();
+                }
 
-            var child = await _context.Childern
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (child == null)
+                return View(child);
+            }
+            catch (Exception)
             {
-                return NotFound();
+                throw;
             }
-
-            return View(child);
         }
 
         // POST: Children/Delete/5
@@ -164,23 +202,26 @@ namespace Preschool.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Childern == null)
+            try
             {
-                return Problem("Entity set 'ApplicationDbContext.Childern'  is null.");
+                var child = await _childrenService.GetChildById(id);
+                if (_childrenService.IsExists(id))
+                {
+                    _childrenService.RemoveChild(child);
+                }
+                return RedirectToAction(nameof(Index));
             }
-            var child = await _context.Childern.FindAsync(id);
-            if (child != null)
+            catch (Exception)
             {
-                _context.Childern.Remove(child);
+
+                throw;
             }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool ChildExists(int id)
         {
-          return _context.Childern.Any(e => e.Id == id);
+          return _childrenService.GetChildById(id) != null;
         }
     }
 }
