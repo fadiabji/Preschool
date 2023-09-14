@@ -7,36 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Preschool.Data;
 using Preschool.Models;
+using Preschool.Models.ViewModels;
+using Preschool.Services;
 
 namespace Preschool.Controllers
 {
     public class TeachersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITeacherService _teacherService;
 
-        public TeachersController(ApplicationDbContext context)
+        public TeachersController(ITeacherService teacherService)
         {
-            _context = context;
+            _teacherService = teacherService;
         }
 
-        // GET: Teachers
+        // GET: Teacherren
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Teachers.Include(t => t.Class);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _teacherService.GetTeachers());
         }
 
-        // GET: Teachers/Details/5
+        // GET: Teacherren/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Teachers == null)
+            if (id == null || _teacherService.GetTeachers() == null)
             {
                 return NotFound();
             }
 
-            var teacher = await _context.Teachers
-                .Include(t => t.Class)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var teacher = await _teacherService.GetTeacherById(id);
             if (teacher == null)
             {
                 return NotFound();
@@ -45,65 +44,115 @@ namespace Preschool.Controllers
             return View(teacher);
         }
 
-        // GET: Teachers/Create
+        // GET: Teacherren/Create
         public IActionResult Create()
         {
-            ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name");
             return View();
         }
 
-        // POST: Teachers/Create
+        // POST: Teacherren/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,DateOfBirth,RegistedAt,IsActive,ClassId")] Teacher teacher)
+        public async Task<IActionResult> Create(List<IFormFile> DocumentCopies, Teacher teacher)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && DocumentCopies != null)
             {
-                _context.Add(teacher);
-                await _context.SaveChangesAsync();
+
+                foreach (var img in DocumentCopies)
+                {
+                    string fileName = img.FileName;
+                    string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\DocumentsCopies"));
+                    using (var filestream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                    { await img.CopyToAsync(filestream); }
+                    if (teacher.DocumentsImage == null)
+                    {
+                        teacher.DocumentsImage = new List<DocumentsCopies>();
+                    }
+                    teacher.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
+                }
+
+
+                await Task.Run(() => _teacherService.RegistTeacher(teacher));
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", teacher.ClassId);
             return View(teacher);
         }
 
-        // GET: Teachers/Edit/5
+
+
+
+
+        // GET: Teacherren/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Teachers == null)
+            if (id == null || _teacherService.GetTeachers() == null)
             {
                 return NotFound();
             }
 
-            var teacher = await _context.Teachers.FindAsync(id);
+            var teacher = await _teacherService.GetTeacherById(id);
             if (teacher == null)
             {
                 return NotFound();
             }
-            ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", teacher.ClassId);
-            return View(teacher);
+            TeacherVM teacherVm = new TeacherVM()
+            {
+                Id = teacher.Id,
+                FirstName = teacher.FirstName,
+                LastName = teacher.LastName,
+                DateOfBirth = teacher.DateOfBirth,
+                RegistedAt = teacher.RegistedAt,
+                IsActive = teacher.IsActive
+            };
+
+            foreach (var docuemnt in teacher.DocumentsImage)
+            {
+                teacherVm.DocumentCopies.Add(docuemnt.ImageFile);
+            }
+
+            return View(teacherVm);
         }
 
-        // POST: Teachers/Edit/5
+        // POST: Teacherren/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,DateOfBirth,RegistedAt,IsActive,ClassId")] Teacher teacher)
+        public async Task<IActionResult> Edit(int id, TeacherVM teachervm, List<IFormFile> DocumentCopies)
         {
+            var teacher = _teacherService.GetTeacherById(id).Result;
+            teacher.Id = teachervm.Id;
+            teacher.FirstName = teachervm.FirstName;
+            teacher.LastName = teachervm.LastName;
+            teacher.DateOfBirth = teachervm.DateOfBirth;
+            teacher.IsActive = teachervm.IsActive;
+            teacher.DocumentsImage.Clear();
+
             if (id != teacher.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && DocumentCopies != null)
             {
                 try
                 {
-                    _context.Update(teacher);
-                    await _context.SaveChangesAsync();
+                    foreach (var img in DocumentCopies)
+                    {
+                        string fileName = img.FileName;
+                        string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\DocumentsCopies"));
+                        using (var filestream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                        { await img.CopyToAsync(filestream); }
+                        if (teacher.DocumentsImage == null)
+                        {
+                            teacher.DocumentsImage = new List<DocumentsCopies>();
+                        }
+                        teacher.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
+                    }
+                    await Task.Run(() => _teacherService.UpdateTeacherRegistration(teacher));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,51 +167,53 @@ namespace Preschool.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", teacher.ClassId);
             return View(teacher);
         }
 
-        // GET: Teachers/Delete/5
+        // GET: Teacherren/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Teachers == null)
+            try
             {
-                return NotFound();
-            }
+                var teacher = await _teacherService.GetTeacherById(id);
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
 
-            var teacher = await _context.Teachers
-                .Include(t => t.Class)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (teacher == null)
+                return View(teacher);
+            }
+            catch (Exception)
             {
-                return NotFound();
+                throw;
             }
-
-            return View(teacher);
         }
 
-        // POST: Teachers/Delete/5
+        // POST: Teacherren/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Teachers == null)
+            try
             {
-                return Problem("Entity set 'ApplicationDbContext.Teachers'  is null.");
+                var teacher = await _teacherService.GetTeacherById(id);
+                if (_teacherService.IsExists(id))
+                {
+                    _teacherService.RemoveTeacher(teacher);
+                }
+                return RedirectToAction(nameof(Index));
             }
-            var teacher = await _context.Teachers.FindAsync(id);
-            if (teacher != null)
+            catch (Exception)
             {
-                _context.Teachers.Remove(teacher);
+
+                throw;
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
         }
 
         private bool TeacherExists(int id)
         {
-          return _context.Teachers.Any(e => e.Id == id);
+            return _teacherService.GetTeacherById(id) != null;
         }
     }
 }

@@ -1,17 +1,50 @@
-﻿using Preschool.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Preschool.Data;
+using Preschool.Models;
+using Preschool.Models.ViewModels;
 
 namespace Preschool.Services
 {
     public class TeacherService : ITeacherService
     {
-        public Task<Child> GetTeacherById(int id)
+        private readonly ApplicationDbContext _db;
+        public TeacherService(ApplicationDbContext db)
         {
-            throw new NotImplementedException();
+            _db = db;
+        }
+        public async Task<IEnumerable<Teacher>> GetTeachers()
+        {
+            return await _db.Teachers.Include(c => c.DocumentsImage).ToListAsync();
         }
 
-        public Task<IEnumerable<Child>> GetTeachers()
+        public async Task<Teacher> GetTeacherById(int? id)
         {
-            throw new NotImplementedException();
+            return await _db.Teachers.Include(c => c.DocumentsImage).SingleOrDefaultAsync(c => c.Id == id);
         }
+
+        public void RegistTeacher(Teacher teacher)
+        {
+            _db.Teachers.Add(teacher);
+            _db.SaveChanges();
+        }
+
+        public void UpdateTeacherRegistration(Teacher teacher)
+        {
+            _db.Teachers.Update(teacher);
+            _db.SaveChanges();
+        }
+
+        public void RemoveTeacher(Teacher teacher)
+        {
+            _db.Remove(teacher);
+            _db.SaveChanges();
+        }
+
+        public bool IsExists(int? id)
+        {
+            return _db.Teachers.Any(t => t.Id == id);
+        }
+
+
     }
 }

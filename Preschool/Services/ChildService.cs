@@ -24,9 +24,6 @@ namespace Preschool.Services
         {
             return await _db.Childern.Include(c => c.DocumentsImage).SingleOrDefaultAsync(c => c.Id == id);
             //return await _db.Childern.Include(c => c.DocumentsImage).FirstOrDefaultAsync(x => x.Id == id);
-
-
-
         }
 
         public void EnrollChild(Child child)
