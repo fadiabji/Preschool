@@ -25,7 +25,7 @@ builder.Services.AddControllersWithViews();
 
 //Add Services
 builder.Services.AddScoped<IChildService, ChildService>();
-builder.Services.AddScoped<IClassService, ClassService>();
+builder.Services.AddScoped<IClassroomService, ClassroomService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();  
 
 

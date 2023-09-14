@@ -12,11 +12,16 @@ namespace Preschool.Models
             [Required]
             public string ImageFile { get; set; }
 
-            [ForeignKey("Child")]
+            [Required]
             public int ChildId { get; set; }
 
             public virtual Child Child { get; set; }
 
-        
+            [Required]
+            public int TeacherId { get; set; }
+
+            public virtual Teacher Teacher { get; set; }
+
+
     }
 }

@@ -40,18 +40,16 @@ namespace Preschool.Models
         [DataType(DataType.Date)]
         public DateTime EnrolDate { get; set; }
 
-        //public string Image { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
 
+        [Required]
+        public int ClassroomId { get; set; }
 
+        public virtual Classroom Classroom { get; set; }
 
         public virtual ICollection<DocumentsImage> DocumentsImage { get; set; }
 
-        //public Child()
-        //{
-        //    List<DocumentsImage> DocumentsImage = new List<DocumentsImage>();
-        //}
     }
 }
