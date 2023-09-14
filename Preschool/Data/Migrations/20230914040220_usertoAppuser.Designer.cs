@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Preschool.Data;
 
@@ -11,9 +12,10 @@ using Preschool.Data;
 namespace Preschool.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230914040220_usertoAppuser")]
+    partial class usertoAppuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,7 +275,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("Childern", (string)null);
+                    b.ToTable("Childern");
                 });
 
             modelBuilder.Entity("Preschool.Models.Class", b =>
@@ -290,7 +292,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Classes", (string)null);
+                    b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("Preschool.Models.DocumentsImage", b =>
@@ -312,7 +314,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("ChildId");
 
-                    b.ToTable("DocumentsImages", (string)null);
+                    b.ToTable("DocumentsImages");
                 });
 
             modelBuilder.Entity("Preschool.Models.Teacher", b =>
@@ -347,7 +349,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

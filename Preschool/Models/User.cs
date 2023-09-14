@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace Preschool.Models
 {
-    public class User : IdentityUser
+    public class  User : IdentityUser
     {
             [PersonalData]
             [Display(Name = "First Name")]

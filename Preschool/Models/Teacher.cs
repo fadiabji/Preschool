@@ -5,6 +5,7 @@ namespace Preschool.Models
 {
     public class Teacher
     {
+        [Key]
         [Required]
         public int Id { get; set; }
 
@@ -24,6 +25,7 @@ namespace Preschool.Models
         public DateTime DateOfBirth { get; set; }
         
         [Required]
+        [DataType(DataType.Date)]
         public DateTime RegistedAt { get; set; }
 
         public bool  IsActive { get; set; }
