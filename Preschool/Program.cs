@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Preschool.Data;
+using Preschool.Models;
 using Preschool.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,13 +15,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()// in order to make the rols in the website you have to add this
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
 
 
+
+
 //Add Services
-builder.Services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IChildService, ChildService>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();  
