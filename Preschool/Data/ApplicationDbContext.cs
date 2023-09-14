@@ -17,312 +17,145 @@ namespace Preschool.Data
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
-        //    //Products
-        //    //Beauty Category
-        //    modelBuilder.Entity<Product>().HasData(new Product
+        //    //Children
+        //    modelBuilder.Entity<Child>().HasData(new Child
         //    {
         //        Id = 1,
-        //        Name = "Glossier - Beauty Kit",
-        //        Description = "A kit provided by Glossier, containing skin care, hair care and makeup products",
-        //        ImageURL = "/Images/Beauty/Beauty1.png",
-        //        Price = 100,
-        //        Qty = 100,
-        //        CategoryId = 1
+        //        FirstName = "Layaan",
+        //        LastName = "Test",
+        //        FatherName = "Fadi",
+        //        MotherName = "Maryam", 
+        //        DateOfBirth = DateTime.Parse("01,01,2019"),
+        //        EnrolDate = DateTime.Parse("01,01,2023"),
+        //        ClassroomId = 1,
+        //        IsActive = true,
 
         //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
+        //    modelBuilder.Entity<Child>().HasData(new Child
         //    {
         //        Id = 2,
-        //        Name = "Curology - Skin Care Kit",
-        //        Description = "A kit provided by Curology, containing skin care products",
-        //        ImageURL = "/Images/Beauty/Beauty2.png",
-        //        Price = 50,
-        //        Qty = 45,
-        //        CategoryId = 1
+        //        FirstName = "Sally",
+        //        LastName = "Test",
+        //        FatherName = "Fadi",
+        //        MotherName = "Maryam",
+        //        DateOfBirth = DateTime.Parse("01,01,2017"),
+        //        EnrolDate = DateTime.Parse("01,01,2022"),
+        //        ClassroomId = 1,
+        //        IsActive = true,
 
         //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
+            
+        //    //ClassRoom
+        //    modelBuilder.Entity<Classroom>().HasData(new Classroom
         //    {
-        //        Id = 3,
-        //        Name = "Cocooil - Organic Coconut Oil",
-        //        Description = "A kit provided by Curology, containing skin care products",
-        //        ImageURL = "/Images/Beauty/Beauty3.png",
-        //        Price = 20,
-        //        Qty = 30,
-        //        CategoryId = 1
+        //        Id = 1,
+        //        Name = "ClassRoom 1",
+        //        Color = "Pink",
+        //        Icon = "fas fa-couch"
 
         //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
+
+
+        //    modelBuilder.Entity<Classroom>().HasData(new Classroom
         //    {
-        //        Id = 4,
-        //        Name = "Schwarzkopf - Hair Care and Skin Care Kit",
-        //        Description = "A kit provided by Schwarzkopf, containing skin care and hair care products",
-        //        ImageURL = "/Images/Beauty/Beauty4.png",
-        //        Price = 50,
-        //        Qty = 60,
-        //        CategoryId = 1
+        //        Id = 2,
+        //        Name = "ClassRoom 2",
+        //        Color = "Blue",
+        //        Icon = "fas fa-couch"
 
         //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 5,
-        //        Name = "Skin Care Kit",
-        //        Description = "Skin Care Kit, containing skin care and hair care products",
-        //        ImageURL = "/Images/Beauty/Beauty5.png",
-        //        Price = 30,
-        //        Qty = 85,
-        //        CategoryId = 1
-
-        //    });
-        //    //Electronics Category
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 6,
-        //        Name = "Air Pods",
-        //        Description = "Air Pods - in-ear wireless headphones",
-        //        ImageURL = "/Images/Electronic/Electronics1.png",
-        //        Price = 100,
-        //        Qty = 120,
-        //        CategoryId = 3
-
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 7,
-        //        Name = "On-ear Golden Headphones",
-        //        Description = "On-ear Golden Headphones - these headphones are not wireless",
-        //        ImageURL = "/Images/Electronic/Electronics2.png",
-        //        Price = 40,
-        //        Qty = 200,
-        //        CategoryId = 3
-
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 8,
-        //        Name = "On-ear Black Headphones",
-        //        Description = "On-ear Black Headphones - these headphones are not wireless",
-        //        ImageURL = "/Images/Electronic/Electronics3.png",
-        //        Price = 40,
-        //        Qty = 300,
-        //        CategoryId = 3
-
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 9,
-        //        Name = "Sennheiser Digital Camera with Tripod",
-        //        Description = "Sennheiser Digital Camera - High quality digital camera provided by Sennheiser - includes tripod",
-        //        ImageURL = "/Images/Electronic/Electronic4.png",
-        //        Price = 600,
-        //        Qty = 20,
-        //        CategoryId = 3
-
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 10,
-        //        Name = "Canon Digital Camera",
-        //        Description = "Canon Digital Camera - High quality digital camera provided by Canon",
-        //        ImageURL = "/Images/Electronic/Electronic5.png",
-        //        Price = 500,
-        //        Qty = 15,
-        //        CategoryId = 3
-
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 11,
-        //        Name = "Nintendo Gameboy",
-        //        Description = "Gameboy - Provided by Nintendo",
-        //        ImageURL = "/Images/Electronic/technology6.png",
-        //        Price = 100,
-        //        Qty = 60,
-        //        CategoryId = 3
-        //    });
-        //    //Furniture Category
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 12,
-        //        Name = "Black Leather Office Chair",
-        //        Description = "Very comfortable black leather office chair",
-        //        ImageURL = "/Images/Furniture/Furniture1.png",
-        //        Price = 50,
-        //        Qty = 212,
-        //        CategoryId = 2
-        //    });
-
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 13,
-        //        Name = "Pink Leather Office Chair",
-        //        Description = "Very comfortable pink leather office chair",
-        //        ImageURL = "/Images/Furniture/Furniture2.png",
-        //        Price = 50,
-        //        Qty = 112,
-        //        CategoryId = 2
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 14,
-        //        Name = "Lounge Chair",
-        //        Description = "Very comfortable lounge chair",
-        //        ImageURL = "/Images/Furniture/Furniture3.png",
-        //        Price = 70,
-        //        Qty = 90,
-        //        CategoryId = 2
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 15,
-        //        Name = "Silver Lounge Chair",
-        //        Description = "Very comfortable Silver lounge chair",
-        //        ImageURL = "/Images/Furniture/Furniture4.png",
-        //        Price = 120,
-        //        Qty = 95,
-        //        CategoryId = 2
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 16,
-        //        Name = "Porcelain Table Lamp",
-        //        Description = "White and blue Porcelain Table Lamp",
-        //        ImageURL = "/Images/Furniture/Furniture6.png",
-        //        Price = 15,
-        //        Qty = 100,
-        //        CategoryId = 2
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 17,
-        //        Name = "Office Table Lamp",
-        //        Description = "Office Table Lamp",
-        //        ImageURL = "/Images/Furniture/Furniture7.png",
-        //        Price = 20,
-        //        Qty = 73,
-        //        CategoryId = 2
-        //    });
-        //    //Shoes Category
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 18,
-        //        Name = "Puma Sneakers",
-        //        Description = "Comfortable Puma Sneakers in most sizes",
-        //        ImageURL = "/Images/Shoes/Shoes1.png",
-        //        Price = 100,
-        //        Qty = 50,
-        //        CategoryId = 4
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 19,
-        //        Name = "Colorful Trainers",
-        //        Description = "Colorful trainsers - available in most sizes",
-        //        ImageURL = "/Images/Shoes/Shoes2.png",
-        //        Price = 150,
-        //        Qty = 60,
-        //        CategoryId = 4
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 20,
-        //        Name = "Blue Nike Trainers",
-        //        Description = "Blue Nike Trainers - available in most sizes",
-        //        ImageURL = "/Images/Shoes/Shoes3.png",
-        //        Price = 200,
-        //        Qty = 70,
-        //        CategoryId = 4
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 21,
-        //        Name = "Colorful Hummel Trainers",
-        //        Description = "Colorful Hummel Trainers - available in most sizes",
-        //        ImageURL = "/Images/Shoes/Shoes4.png",
-        //        Price = 120,
-        //        Qty = 120,
-        //        CategoryId = 4
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 22,
-        //        Name = "Red Nike Trainers",
-        //        Description = "Red Nike Trainers - available in most sizes",
-        //        ImageURL = "/Images/Shoes/Shoes5.png",
-        //        Price = 200,
-        //        Qty = 100,
-        //        CategoryId = 4
-        //    });
-        //    modelBuilder.Entity<Product>().HasData(new Product
-        //    {
-        //        Id = 23,
-        //        Name = "Birkenstock Sandles",
-        //        Description = "Birkenstock Sandles - available in most sizes",
-        //        ImageURL = "/Images/Shoes/Shoes6.png",
-        //        Price = 50,
-        //        Qty = 150,
-        //        CategoryId = 4
-        //    });
+            
+         
 
         //    //Add users
         //    modelBuilder.Entity<User>().HasData(new User
         //    {
-        //        Id = 1,
-        //        UserName = "Fadi"
-
+        //        Id = "1",
+        //        FirstName = "Fadi",
+        //        LastName= "Test"
+                
         //    });
         //    modelBuilder.Entity<User>().HasData(new User
         //    {
-        //        Id = 2,
-        //        UserName = "Maryam"
+        //        Id = "2",
+        //        FirstName = "Maryam",
+        //        LastName = "Test"
 
         //    });
 
-        //    //Create Shopping Cart for Users
-        //    modelBuilder.Entity<Cart>().HasData(new Cart
+        //    //Teacher
+        //    modelBuilder.Entity<Teacher>().HasData(new Teacher
+        //    {
+        //       Id= 1,
+        //       FirstName= "Teacher1",
+        //       LastName= "Test",
+        //       DateOfBirth = DateTime.Parse("10.10.1987"),
+        //       RegistedAt = DateTime.Parse("10,10,2022"),
+        //       ClassroomId= 1,
+        //       IsActive = true,
+        //    });
+        //    modelBuilder.Entity<Teacher>().HasData(new Teacher
+        //    {
+        //        Id = 2,
+        //        FirstName = "Teacher2",
+        //        LastName = "Test",
+        //        DateOfBirth = DateTime.Parse("10.10.1987"),
+        //        RegistedAt = DateTime.Parse("10,10,2022"),
+        //        ClassroomId = 2,
+        //        IsActive = true,
+        //    });
+
+        //    modelBuilder.Entity<DocumentsCopies>().HasData(new DocumentsCopies
         //    {
         //        Id = 1,
-        //        UserId = 1
-
+        //        ImageFile = "wwwroot/DocumentsCopies/NikeTShirt.jpg",
         //    });
-        //    modelBuilder.Entity<Cart>().HasData(new Cart
+        //    modelBuilder.Entity<DocumentsCopies>().HasData(new DocumentsCopies
         //    {
         //        Id = 2,
-        //        UserId = 2
-
+        //        ImageFile = "wwwroot/DocumentsCopies/RainCoat.jpg",
         //    });
-        //    //Add Product Categories
-        //    modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory
-        //    {
-        //        Id = 1,
-        //        Name = "Beauty",
-        //        IconCss = "fas fa-spa"
-        //    });
-        //    modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory
-        //    {
-        //        Id = 2,
-        //        Name = "Furniture",
-        //        IconCss = "fas fa-couch"
-        //    });
-        //    modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory
+        //    modelBuilder.Entity<DocumentsCopies>().HasData(new DocumentsCopies
         //    {
         //        Id = 3,
-        //        Name = "Electronics",
-        //        IconCss = "fas fa-headphones"
+        //        ImageFile = "wwwroot/DocumentsCopies/VersityJacket.jpg",
         //    });
-        //    modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory
+
+
+        //    modelBuilder.Entity<TeacherDocuemtnsCopy>().HasData(new TeacherDocuemtnsCopy
         //    {
-        //        Id = 4,
-        //        Name = "Shoes",
-        //        IconCss = "fas fa-shoe-prints"
+        //        Id = 1,
+        //        TeacherId = 1,
+        //        DocumentsCopyId =1
+
         //    });
+        //    modelBuilder.Entity<TeacherDocuemtnsCopy>().HasData(new TeacherDocuemtnsCopy
+        //    {
+        //        Id = 2,
+        //        TeacherId = 2,
+        //        DocumentsCopyId = 2
+        //    });
+        //    modelBuilder.Entity<ChildDocumentsCopy>().HasData(new ChildDocumentsCopy
+        //    {
+        //        Id = 3,
+        //        ChildId = 1,
+        //        DocumentsCopyId = 3
+        //    });
+
         //}
 
         public DbSet<Child> Childern { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Classroom> Classrooms  { get; set; }
 
-        public DbSet<DocumentsImage> DocumentsImages { get; set; }
+        public DbSet<DocumentsCopies> DocumentsImages { get; set; }
+
+        public DbSet<TeacherDocuemtnsCopy> TeacherDocuemtnsCopies { get; set; }
+
+
+        public DbSet<ChildDocumentsCopy> ChildDocumentsCopies { get; set; }
+
+
 
     }
 

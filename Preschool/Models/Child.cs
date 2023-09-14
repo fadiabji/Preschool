@@ -49,7 +49,7 @@ namespace Preschool.Models
 
         public virtual Classroom Classroom { get; set; }
 
-        public virtual ICollection<DocumentsImage> DocumentsImage { get; set; }
+        public virtual ICollection<DocumentsCopies> DocumentsImage { get; set; }
 
     }
 }

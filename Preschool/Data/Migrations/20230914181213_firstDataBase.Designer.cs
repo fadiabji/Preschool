@@ -12,8 +12,8 @@ using Preschool.Data;
 namespace Preschool.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230914125845_firstMigration")]
-    partial class firstMigration
+    [Migration("20230914181213_firstDataBase")]
+    partial class firstDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -273,6 +273,29 @@ namespace Preschool.Data.Migrations
                     b.ToTable("Childern");
                 });
 
+            modelBuilder.Entity("Preschool.Models.ChildDocumentsCopy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChildId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DocumentsCopyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChildId");
+
+                    b.HasIndex("DocumentsCopyId");
+
+                    b.ToTable("ChildDocumentsCopies");
+                });
+
             modelBuilder.Entity("Preschool.Models.Classroom", b =>
                 {
                     b.Property<int>("Id")
@@ -298,7 +321,7 @@ namespace Preschool.Data.Migrations
                     b.ToTable("Classrooms");
                 });
 
-            modelBuilder.Entity("Preschool.Models.DocumentsImage", b =>
+            modelBuilder.Entity("Preschool.Models.DocumentsCopies", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -306,14 +329,14 @@ namespace Preschool.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ChildId")
+                    b.Property<int?>("ChildId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageFile")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TeacherId")
+                    b.Property<int?>("TeacherId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -358,6 +381,29 @@ namespace Preschool.Data.Migrations
                     b.HasIndex("ClassroomId");
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("Preschool.Models.TeacherDocuemtnsCopy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DocumentsCopyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentsCopyId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("TeacherDocuemtnsCopies");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -422,23 +468,34 @@ namespace Preschool.Data.Migrations
                     b.Navigation("Classroom");
                 });
 
-            modelBuilder.Entity("Preschool.Models.DocumentsImage", b =>
+            modelBuilder.Entity("Preschool.Models.ChildDocumentsCopy", b =>
                 {
                     b.HasOne("Preschool.Models.Child", "Child")
-                        .WithMany("DocumentsImage")
+                        .WithMany()
                         .HasForeignKey("ChildId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Preschool.Models.Teacher", "Teacher")
-                        .WithMany("DocumentsImage")
-                        .HasForeignKey("TeacherId")
+                    b.HasOne("Preschool.Models.DocumentsCopies", "DocumentsCopy")
+                        .WithMany()
+                        .HasForeignKey("DocumentsCopyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Child");
 
-                    b.Navigation("Teacher");
+                    b.Navigation("DocumentsCopy");
+                });
+
+            modelBuilder.Entity("Preschool.Models.DocumentsCopies", b =>
+                {
+                    b.HasOne("Preschool.Models.Child", null)
+                        .WithMany("DocumentsImage")
+                        .HasForeignKey("ChildId");
+
+                    b.HasOne("Preschool.Models.Teacher", null)
+                        .WithMany("DocumentsImage")
+                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("Preschool.Models.Teacher", b =>
@@ -450,6 +507,25 @@ namespace Preschool.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Classroom");
+                });
+
+            modelBuilder.Entity("Preschool.Models.TeacherDocuemtnsCopy", b =>
+                {
+                    b.HasOne("Preschool.Models.DocumentsCopies", "DocumentsCopy")
+                        .WithMany()
+                        .HasForeignKey("DocumentsCopyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Preschool.Models.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocumentsCopy");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Preschool.Models.Child", b =>

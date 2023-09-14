@@ -71,9 +71,9 @@ namespace Preschool.Controllers
                     { await img.CopyToAsync(filestream); }
                     if (child.DocumentsImage == null)
                     {
-                        child.DocumentsImage = new List<DocumentsImage>();
+                        child.DocumentsImage = new List<DocumentsCopies>();
                     }
-                    child.DocumentsImage.Add(new DocumentsImage { ImageFile = img.FileName });
+                    child.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
                 }
 
 
@@ -156,9 +156,9 @@ namespace Preschool.Controllers
                         { await img.CopyToAsync(filestream); }
                         if (child.DocumentsImage == null)
                         {
-                            child.DocumentsImage = new List<DocumentsImage>();
+                            child.DocumentsImage = new List<DocumentsCopies>();
                         }
-                        child.DocumentsImage.Add(new DocumentsImage { ImageFile = img.FileName });
+                        child.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
                     }
                     await Task.Run(() => _childrenService.UpdateChildEnrollment(child));
                 }

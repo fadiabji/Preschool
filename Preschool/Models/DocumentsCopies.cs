@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Preschool.Models
 {
-    public class DocumentsImage
+    public class DocumentsCopies
     {
             [Key]
             [Required]
@@ -11,17 +11,6 @@ namespace Preschool.Models
 
             [Required]
             public string ImageFile { get; set; }
-
-            [Required]
-            public int ChildId { get; set; }
-
-            public virtual Child Child { get; set; }
-
-            [Required]
-            public int TeacherId { get; set; }
-
-            public virtual Teacher Teacher { get; set; }
-
 
     }
 }

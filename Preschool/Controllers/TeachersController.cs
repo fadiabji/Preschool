@@ -68,9 +68,9 @@ namespace Preschool.Controllers
                     { await img.CopyToAsync(filestream); }
                     if (teacher.DocumentsImage == null)
                     {
-                        teacher.DocumentsImage = new List<DocumentsImage>();
+                        teacher.DocumentsImage = new List<DocumentsCopies>();
                     }
-                    teacher.DocumentsImage.Add(new DocumentsImage { ImageFile = img.FileName });
+                    teacher.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
                 }
 
 
@@ -148,9 +148,9 @@ namespace Preschool.Controllers
                         { await img.CopyToAsync(filestream); }
                         if (teacher.DocumentsImage == null)
                         {
-                            teacher.DocumentsImage = new List<DocumentsImage>();
+                            teacher.DocumentsImage = new List<DocumentsCopies>();
                         }
-                        teacher.DocumentsImage.Add(new DocumentsImage { ImageFile = img.FileName });
+                        teacher.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
                     }
                     await Task.Run(() => _teacherService.UpdateTeacherRegistration(teacher));
                 }
