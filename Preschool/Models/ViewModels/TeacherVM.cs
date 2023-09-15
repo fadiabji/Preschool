@@ -32,13 +32,11 @@ namespace Preschool.Models.ViewModels
 
         public bool IsActive { get; set; }
 
+        public int ClassroomId { get; set; }
 
         public List<string> DocumentCopies { get; set; }
 
-        //[Required]
-        //public int ClassId { get; set; }
-
-        //public virtual Class Class { get; set; }
+      
         public TeacherVM()
         {
             DocumentCopies = new List<string>();

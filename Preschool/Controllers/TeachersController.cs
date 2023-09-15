@@ -15,10 +15,11 @@ namespace Preschool.Controllers
     public class TeachersController : Controller
     {
         private readonly ITeacherService _teacherService;
-
-        public TeachersController(ITeacherService teacherService)
+        private readonly IClassroomService _classroomService;
+        public TeachersController(ITeacherService teacherService, IClassroomService classroomService)
         {
             _teacherService = teacherService;
+            _classroomService = classroomService;
         }
 
         // GET: Teacherren
@@ -47,6 +48,8 @@ namespace Preschool.Controllers
         // GET: Teacherren/Create
         public IActionResult Create()
         {
+
+            ViewData["ClassId"] = new SelectList( _classroomService.GetClasses().Result, "Id", "Name");
             return View();
         }
 
@@ -78,6 +81,7 @@ namespace Preschool.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ClassroomId"] = new SelectList(await Task.Run(() => _classroomService.GetClasses().Result), "Id", "Name", teacher.ClassroomId);
             return View(teacher);
         }
 
@@ -88,10 +92,7 @@ namespace Preschool.Controllers
         // GET: Teacherren/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _teacherService.GetTeachers() == null)
-            {
-                return NotFound();
-            }
+           
 
             var teacher = await _teacherService.GetTeacherById(id);
             if (teacher == null)
@@ -105,14 +106,15 @@ namespace Preschool.Controllers
                 LastName = teacher.LastName,
                 DateOfBirth = teacher.DateOfBirth,
                 RegistedAt = teacher.RegistedAt,
-                IsActive = teacher.IsActive
+                IsActive = teacher.IsActive,
+                ClassroomId = teacher.ClassroomId,  
             };
 
             foreach (var docuemnt in teacher.DocumentsImage)
             {
                 teacherVm.DocumentCopies.Add(docuemnt.ImageFile);
             }
-
+            ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
             return View(teacherVm);
         }
 
@@ -129,6 +131,7 @@ namespace Preschool.Controllers
             teacher.LastName = teachervm.LastName;
             teacher.DateOfBirth = teachervm.DateOfBirth;
             teacher.IsActive = teachervm.IsActive;
+            teacher.ClassroomId = teachervm.ClassroomId;
             teacher.DocumentsImage.Clear();
 
             if (id != teacher.Id)

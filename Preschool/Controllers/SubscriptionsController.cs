@@ -58,14 +58,14 @@ namespace Preschool.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,Active,CreatedAt,ExpireAt,PaymentComplete,ChildId,SubscriptionTypeId")] Subscription subscription)
+        public async Task<IActionResult> Create(Subscription subscription)
         {
             if (ModelState.IsValid)
             {
                _subscriptionService.AddSubscription(subscription);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Description", subscription.SubscriptionTypeId);
+            ViewData["SubscriptionTypeId"] = new SelectList(await Task.Run(()=>_subscriptionTypeService.GetSubscriptionTypes().Result), "Id", "Description", subscription.SubscriptionTypeId);
             return View(subscription);
         }
 
@@ -91,7 +91,7 @@ namespace Preschool.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Active,CreatedAt,ExpireAt,PaymentComplete,ChildId,SubscriptionTypeId")] Subscription subscription)
+        public async Task<IActionResult> Edit(int id, Subscription subscription)
         {
             if (id != subscription.Id)
             {

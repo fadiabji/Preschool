@@ -12,12 +12,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Active)
-            </th>
+         
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
@@ -39,12 +34,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
+         
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>

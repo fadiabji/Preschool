@@ -37,19 +37,24 @@ namespace Preschool.Models
         public DateTime DateOfBirth { get; set; }
 
         [Required]
+        [Display(Name = "Enrol Date")]
         [DataType(DataType.Date)]
         public DateTime EnrolDate { get; set; }
 
 
         [Required]
-        public bool IsActive { get; set; }
-
-        [Required]
         public int ClassroomId { get; set; }
+
+
+        public virtual ICollection<Subscription> Subscriptions { get; set; }
 
         public virtual Classroom Classroom { get; set; }
 
         public virtual ICollection<DocumentsCopies> DocumentsImage { get; set; }
 
+        public Child()
+        {
+            Subscriptions = new List<Subscription>();
+        }
     }
 }

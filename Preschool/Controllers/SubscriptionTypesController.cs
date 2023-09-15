@@ -29,18 +29,22 @@ namespace Preschool.Controllers
         // GET: SubscriptionTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _subscriptionTypeService.GetSubscriptionTypes() == null)
-            {
-                return NotFound();
-            }
 
-            var subscriptionType = await  _subscriptionTypeService.GetSubscriptionTypeById(id);
-            if (subscriptionType == null)
+            try
             {
-                return NotFound();
-            }
+                var subscriptionType = await  _subscriptionTypeService.GetSubscriptionTypeById(id);
+                if (subscriptionType == null)
+                {
+                    return NotFound();
+                }
 
-            return View(subscriptionType);
+                return View(subscriptionType);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         // GET: SubscriptionTypes/Create
@@ -117,18 +121,19 @@ namespace Preschool.Controllers
         // GET: SubscriptionTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null ||  _subscriptionTypeService.GetSubscriptionTypes() == null)
+            try
             {
-                return NotFound();
+                var subscriptionType = await _subscriptionTypeService.GetSubscriptionTypeById(id);
+                if (subscriptionType == null)
+                {
+                    return NotFound();
+                }
+                return View(subscriptionType);
             }
-
-            var subscriptionType = await _subscriptionTypeService.GetSubscriptionTypeById(id);
-            if (subscriptionType == null)
+            catch (Exception)
             {
-                return NotFound();
+                throw;
             }
-
-            return View(subscriptionType);
         }
 
         // POST: SubscriptionTypes/Delete/5
@@ -136,15 +141,19 @@ namespace Preschool.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-           
-            var subscriptionType = await  _subscriptionTypeService.GetSubscriptionTypeById(id);
-            if (subscriptionType != null)
+            try
             {
-                 _subscriptionTypeService.RemoveSubscriptionType(subscriptionType);
+                var subscriptionType = await _subscriptionTypeService.GetSubscriptionTypeById(id);
+                if (subscriptionType != null)
+                {
+                    _subscriptionTypeService.RemoveSubscriptionType(subscriptionType);
+                }
+                return RedirectToAction(nameof(Index));
             }
-            
-           
-            return RedirectToAction(nameof(Index));
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private bool SubscriptionTypeExists(int id)

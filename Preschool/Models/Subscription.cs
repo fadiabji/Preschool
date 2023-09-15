@@ -6,13 +6,7 @@ namespace Preschool.Models
     {
         [Key]
         public int Id { get; set; }
-       
-        [Required]
-        public decimal Price { get; set; }
-        
-        [Required]
-        public bool Active { get; set; } = false;
-       
+    
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Created At")]
@@ -24,8 +18,11 @@ namespace Preschool.Models
 
         [Required]
         public bool PaymentComplete { get; set; }
-     
-        public string ChildId { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
+
+        public int ChildId { get; set; }
      
         public int SubscriptionTypeId { get; set; }
      
