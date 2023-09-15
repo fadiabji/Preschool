@@ -40,7 +40,7 @@ namespace Preschool.Models.ViewModels
         [DataType(DataType.Date)]
         public DateTime EnrolDate { get; set; }
 
-        //public string Image { get; set; }
+        public int ClassroomId { get; set; }
 
 
         public bool IsActive { get; set; } = true;
@@ -48,9 +48,12 @@ namespace Preschool.Models.ViewModels
 
         public List<string> DocumentCopies { get; set; }
 
+
+        public int SubscriptionTypeId { get; set; }
+
         public ChildVM()
         {
-            DocumentCopies = new List<string>();    
+            DocumentCopies = new List<string>();
         }
 
     }

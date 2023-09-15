@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-//using AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,10 +17,16 @@ namespace Preschool.Controllers
     public class ChildrenController : Controller
     {
         private readonly IChildService _childrenService;
+        private readonly IClassroomService _classroomService;
+        private readonly ISubscriptionTypeService _subscriptionTypeService;
 
-        public ChildrenController( IChildService childService)
+        public ChildrenController( IChildService childService, 
+                                   IClassroomService classroomService, 
+                                   ISubscriptionTypeService subscriptionTypeService)
         {
             _childrenService = childService;
+            _classroomService = classroomService;
+            _subscriptionTypeService = subscriptionTypeService;
         }
 
         // GET: Children
@@ -33,23 +38,28 @@ namespace Preschool.Controllers
         // GET: Children/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _childrenService.GetChildren() == null)
+            try
             {
-                return NotFound();
-            }
+                var child = await _childrenService.GetChildById(id);
+                if (child == null)
+                {
+                    return NotFound();
+                }
 
-            var child = await _childrenService.GetChildById(id);
-            if (child == null)
+                return View(child);
+            }
+            catch (Exception)
             {
-                return NotFound();
-            }
 
-            return View(child);
+                throw;
+            }
         }
 
         // GET: Children/Create
         public IActionResult Create()
         {
+            ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
+            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
             return View();
         }
 
@@ -58,11 +68,25 @@ namespace Preschool.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(List<IFormFile> DocumentCopies, Child child)
+        public async Task<IActionResult> Create(List<IFormFile> DocumentCopies, ChildVM childVm)
         {
+
+            var child = new Child
+            {
+                Id = childVm.Id,
+                FirstName = childVm.FirstName,
+                LastName = childVm.LastName,
+                MotherName = childVm.MotherName,
+                FatherName = childVm.FatherName,
+                DateOfBirth = childVm.DateOfBirth,
+                EnrolDate = childVm.EnrolDate,
+                ClassroomId = childVm.ClassroomId
+            };
+            child.Subscriptions.Add(new Subscription { SubscriptionTypeId = childVm.SubscriptionTypeId });
+
             if (ModelState.IsValid && DocumentCopies != null)
             {
-                
+
                 foreach (var img in DocumentCopies)
                 {
                     string fileName = img.FileName;
@@ -91,11 +115,7 @@ namespace Preschool.Controllers
         // GET: Children/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _childrenService.GetChildren() == null)
-            {
-                return NotFound();
-            }
-
+          
             var child = await _childrenService.GetChildById(id);
             if (child == null)
             {
@@ -108,15 +128,17 @@ namespace Preschool.Controllers
                 LastName = child.LastName,
                 DateOfBirth = child.DateOfBirth,
                 EnrolDate = child.EnrolDate,
-                IsActive = child.IsActive,
                 FatherName = child.FatherName,
-                MotherName = child.MotherName
+                MotherName = child.MotherName,
+                ClassroomId = child.ClassroomId,
             };
-         
+            childVm.SubscriptionTypeId = child.Subscriptions.Select(s => s.SubscriptionTypeId).FirstOrDefault();         
             foreach ( var docuemnt in child.DocumentsImage)
             {
                 childVm.DocumentCopies.Add(docuemnt.ImageFile);
             }
+            ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
+            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
 
             return View(childVm);
         }
@@ -136,9 +158,13 @@ namespace Preschool.Controllers
             child.MotherName = childvm.MotherName;
             child.DateOfBirth = childvm.DateOfBirth;
             child.EnrolDate = childvm.EnrolDate;
-            child.IsActive = childvm.IsActive;
+            child.ClassroomId = childvm.ClassroomId;
             child.DocumentsImage.Clear();
 
+            //list.Where(w => w.Name == "height").ToList().ForEach(s => s.Value = 30);
+
+            child.Subscriptions.Where(s => s.ChildId == childvm.Id).ToList().ForEach(s => s.SubscriptionTypeId = childvm.SubscriptionTypeId);
+            //child.Subscriptions.FirstOrDefault(s => s.SubscriptionTypeId == childvm.SubscriptionTypeId);
             if (id != child.Id)
             {
                 return NotFound();

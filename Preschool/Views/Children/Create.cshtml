@@ -42,12 +42,16 @@
                 <input asp-for="EnrolDate" class="form-control" />
                 <span asp-validation-for="EnrolDate" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
+
+            <div class="form-group">
+                <label asp-for="ClassroomId" class="control-label"></label>
+                <select asp-for="ClassroomId" class="form-control" asp-items="ViewBag.ClassId"></select>
             </div>
 
+            <div class="form-group">
+                <label asp-for="SubscriptionTypeId" class="control-label"></label>
+                <select asp-for="SubscriptionTypeId" class="form-control" asp-items="ViewBag.SubscriptionTypeId"></select>
+            </div>
 
             <div class="form-group">
                 <label asp-for="DocumentCopies" class="control-label"></label>
