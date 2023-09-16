@@ -1,0 +1,30 @@
+﻿@model Preschool.Models.Child
+
+
+@{
+    ViewData["Title"] = "ChildPage";
+}
+
+<h3>@Model.FirstName @Model.LastName Page</h3>
+
+
+@foreach(var document in Model.DocumentsImage)
+{
+
+    // here use a carosal 
+    <img src="~/DocumentsCopies/@document.ImageFile" width="500" height="700">
+}
+
+@*Renew the supscription *@
+
+
+@*subscirption history*@
+<div>
+    @*need to fix*@
+    @*@await Component.InvokeAsync("ChildSubscriptionsHistory")*@
+
+</div>
+    
+  
+
+@*Attendnec schema*@
