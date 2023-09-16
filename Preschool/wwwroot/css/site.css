@@ -16,3 +16,18 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*subcard*/
+.subCard {
+    border: 5px double dodgerblue;
+    text-align: center;
+    border-radius: 100px;
+    font-size: 1.2em
+}
+
+.subCardBody {
+    border: 5px double dodgerblue;
+    border-radius: 60px;
+    padding: 5px;
+    color: black;
+}
