@@ -97,7 +97,14 @@ namespace Preschool.Controllers
                 EnrolDate = childVm.EnrolDate,
                 ClassroomId = childVm.ClassroomId
             };
-            child.Subscriptions.Add(new Subscription { SubscriptionTypeId = childVm.SubscriptionTypeId });
+            child.Subscriptions.Add(new Subscription
+                                                    {
+                                                        SubscriptionTypeId = childVm.SubscriptionTypeId,
+                                                        IsActive = true,
+                                                        CreatedAt = DateTime.Now,
+                                                        ExpireAt = DateTime.Now.AddMonths(_subscriptionTypeService.GetSubscriptionTypeById(childVm.SubscriptionTypeId).Result.DurationMonth),
+                                                        PaymentComplete = true
+                                                    }) ;
 
             if (ModelState.IsValid && DocumentCopies != null)
             {

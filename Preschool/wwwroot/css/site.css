@@ -31,3 +31,17 @@ body {
     padding: 5px;
     color: black;
 }
+
+/*child document images*/
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* Add more styling as needed */
+}
+.image-item {
+    width: 30%; /* Adjust the width as needed */
+    margin: 10px;
+    /* Add more styling as needed */
+}

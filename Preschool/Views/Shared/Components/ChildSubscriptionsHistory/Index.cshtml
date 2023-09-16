@@ -14,8 +14,8 @@
                 <div class="subCard card">
                     <div class="subCardBody card-body">
                         <h4 class="card-title"><b>@subscription.SubscriptionType.Name</b></h4>
-                        <p class="card-text">Created at: @subscription.CreatedAt</p>
-                        <p class="card-text">Expires at: @subscription.ExpireAt</p>
+                        <p class="card-text">Created at: @subscription.CreatedAt.ToString("yyyy/MM/dd")</p>
+                        <p class="card-text">Expires at: @subscription.ExpireAt.ToString("yyyy/MM/dd")</p>
                         <p class="card-text">Price: @subscription.SubscriptionType.Price </p>
                         @if (subscription.IsActive == true)
                         {
