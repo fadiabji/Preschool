@@ -29,6 +29,21 @@ namespace Preschool.Controllers
             _subscriptionTypeService = subscriptionTypeService;
         }
 
+        public async Task<IActionResult> ChildPage(int id)
+        {
+            try
+            {
+                var child = await _childrenService.GetChildById(id);
+                return View(child);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+           
+        }
+
         // GET: Children
         public async Task<IActionResult> Index()
         {
