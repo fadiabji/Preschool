@@ -18,16 +18,26 @@ body {
 }
 
 /*subcard*/
-.subCard {
-    border: 5px double dodgerblue;
-    text-align: center;
-    border-radius: 100px;
-    font-size: 1.2em
-}
-
 .subCardBody {
     border: 5px double dodgerblue;
     border-radius: 60px;
     padding: 5px;
     color: black;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+/*child document images*/
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* Add more styling as needed */
+}
+.image-item {
+    width: 30%; /* Adjust the width as needed */
+    margin: 10px;
+    /* Add more styling as needed */
 }

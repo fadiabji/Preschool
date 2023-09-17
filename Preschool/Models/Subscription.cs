@@ -14,7 +14,7 @@ namespace Preschool.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Expire At")]
-        public DateTime ExpireAt { get; set; }
+        public DateTime ExpireAt { get; set; } 
 
         [Required]
         public bool PaymentComplete { get; set; }

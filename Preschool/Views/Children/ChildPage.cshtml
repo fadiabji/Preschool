@@ -5,28 +5,68 @@
     ViewData["Title"] = "ChildPage";
 }
 
-<h3>@Model.FirstName @Model.LastName Page</h3>
+<h1>@Model.FirstName @Model.LastName Page</h1>
+
+@*subscirption history*@
+
+<div class="row">
+    @await Component.InvokeAsync("ChildSubscriptionsHistory" , new {id = Model.Id})
+    <br />
+</div>
 
 
-@foreach(var document in Model.DocumentsImage)
-{
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" style="max-width: 100%; max-height: 80vh;">
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<h1>Child Documents </h1>
+<div class="row">
+    @foreach (var image in Model.DocumentsImage.Select(i => i.ImageFile))
+    {
+        <div class="col-lg-4">
+            <a href="#" data-toggle="modal" data-target="#imageModal" onclick="showImage('@image')">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" height="350" src="~/DocumentsCopies/@image" alt="@image"/>
+                </div>
+            </a>
+        </div>
+    }
+</div>
 
-    // here use a carosal 
-    <img src="~/DocumentsCopies/@document.ImageFile" width="500" height="700">
-}
+
 
 @*Renew the supscription *@
 
 
-@*subscirption history*@
-<div>
-    @*need to fix*@
-    @*@await Component.InvokeAsync("ChildSubscriptionsHistory")*@
 
-    @await Component.InvokeAsync("ChildSubscriptionsHistory" , new {id = Model.Id})
-
-</div>
     
   
 
 @*Attendnec schema*@
+
+
+
+
+
+@section Scripts {
+    <script>
+        function showImage(imageFile) {
+            var baseUrl = '@Url.Content("~/")'; // Razor syntax to get the application's root path
+            var modalImage = document.getElementById('modalImage');
+            modalImage.src = baseUrl + 'DocumentsCopies/' + imageFile;
+        }
+
+       
+    </script>
+
+}

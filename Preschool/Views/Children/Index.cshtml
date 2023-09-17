@@ -9,6 +9,9 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<input class="form-control" id="myInput" type="text" placeholder="Search..">
+<br />
 <table class="table">
     <thead>
         <tr>
@@ -35,9 +38,10 @@
             </th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="myTable">
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -62,6 +66,9 @@
                 @Html.DisplayFor(modelItem => item.Classroom.Name)
             </td>
             <td>
+                    <a asp-controller="Children" asp-action="ReNewSubscription" asp-route-id="@item.Id">Renew Subsc.</a>
+            </td>
+            <td>
                     <a  asp-controller="Children" asp-action="ChildPage" asp-route-id="@item.Id">Child page</a>
             </td>
                
@@ -74,3 +81,17 @@
 }
     </tbody>
 </table>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}
