@@ -38,6 +38,7 @@
             </th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody id="myTable">
@@ -63,6 +64,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Classroom.Name)
+            </td>
+            <td>
+                    <a asp-controller="Children" asp-action="ReNewSubscription" asp-route-id="@item.Id">Renew Subsc.</a>
             </td>
             <td>
                     <a  asp-controller="Children" asp-action="ChildPage" asp-route-id="@item.Id">Child page</a>

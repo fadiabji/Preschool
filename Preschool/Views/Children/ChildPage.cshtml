@@ -8,27 +8,12 @@
 <h1>@Model.FirstName @Model.LastName Page</h1>
 
 @*subscirption history*@
-<div>
+
+<div class="row">
     @await Component.InvokeAsync("ChildSubscriptionsHistory" , new {id = Model.Id})
 </div>
 
-@*<div class="row">
-    @foreach (var image in Model.DocumentsImage)
-    {
-        <div class="col-lg-4">
-           <a href="#">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" height="350" src="~/DocumentsCopies/@image.ImageFile" alt="@image.ImageFile">
-                </div>
-           </a>
-        </div>
-    }
-</div>
-<br style="margin-bottom:100px" />
 <br />
-<br />*@
-
-
 <!-- Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -42,7 +27,7 @@
         </div>
     </div>
 </div>
-
+<h1>Child Documents </h1>
 <div class="row">
     @foreach (var image in Model.DocumentsImage.Select(i => i.ImageFile))
     {
@@ -74,16 +59,6 @@
 
 
 @section Scripts {
-   @* <script>
-        function showImage(imageFile) {
-            var modalImage = document.getElementById("modalImage");
-            modalImage.src = "~/DocumentsCopies/" + imageFile;
-            console.log(modalImage.src)
-            //modalImage.alt = "~/DocumentsCopies/" + imageFile;
-        }
-    </script>*@
-
-
     <script>
         function showImage(imageFile) {
             var baseUrl = '@Url.Content("~/")'; // Razor syntax to get the application's root path

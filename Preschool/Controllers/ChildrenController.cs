@@ -44,6 +44,47 @@ namespace Preschool.Controllers
            
         }
 
+        public async Task<IActionResult> ReNewSubscription(int id)
+        {
+            try
+            {
+                var child = await _childrenService.GetChildById(id);
+                var renewsub = new ChildReNewSubscriptionVM { ChildId = id, ClassroomId = child.ClassroomId, SubscriptionTypId = child.Subscriptions.FirstOrDefault().SubscriptionTypeId };
+                ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
+                ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
+                return View(renewsub);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReNewSubscription(ChildReNewSubscriptionVM renewsub)
+        {
+            try
+            {
+                var child = await _childrenService.GetChildById(renewsub.ChildId);
+                child.ClassroomId = renewsub.ClassroomId;
+                child.Subscriptions.Add(new Subscription
+                                           {
+                                               SubscriptionTypeId = renewsub.SubscriptionTypId,
+                                               IsActive = true,
+                                               CreatedAt = DateTime.Now,
+                                               ExpireAt = DateTime.Now.AddMonths(_subscriptionTypeService.GetSubscriptionTypeById(renewsub.SubscriptionTypId).Result.DurationMonth),
+                                               PaymentComplete = true
+                                           });
+
+                await Task.Run(() => _childrenService.UpdateChildEnrollment(child));
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: Children
         public async Task<IActionResult> Index()
         {
