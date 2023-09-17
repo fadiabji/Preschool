@@ -18,7 +18,7 @@ namespace Preschool.ViewComponents
         {
             //var Id = int.Parse(id);
             //var childSubscriptionsHistory = _subscriptionService.GetSubscriptions().Result.Where(c => c.Id == Id).ToList();
-            var childSubscriptionsHistory = _childService.GetChildById(id).Result.Subscriptions.ToList();
+            var childSubscriptionsHistory = _childService.GetChildById(id).Result.Subscriptions.OrderByDescending(s => s.CreatedAt).ToList();
             return View("Index", childSubscriptionsHistory);
 
         }

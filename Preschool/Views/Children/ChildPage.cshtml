@@ -11,9 +11,10 @@
 
 <div class="row">
     @await Component.InvokeAsync("ChildSubscriptionsHistory" , new {id = Model.Id})
+    <br />
 </div>
 
-<br />
+
 <!-- Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -27,6 +28,7 @@
         </div>
     </div>
 </div>
+<br />
 <h1>Child Documents </h1>
 <div class="row">
     @foreach (var image in Model.DocumentsImage.Select(i => i.ImageFile))
@@ -38,8 +40,6 @@
                 </div>
             </a>
         </div>
-
-        
     }
 </div>
 
@@ -65,6 +65,8 @@
             var modalImage = document.getElementById('modalImage');
             modalImage.src = baseUrl + 'DocumentsCopies/' + imageFile;
         }
+
+       
     </script>
 
 }

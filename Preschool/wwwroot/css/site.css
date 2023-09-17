@@ -18,18 +18,14 @@ body {
 }
 
 /*subcard*/
-.subCard {
-    border: 5px double dodgerblue;
-    text-align: center;
-    border-radius: 100px;
-    font-size: 1.2em
-}
-
 .subCardBody {
     border: 5px double dodgerblue;
     border-radius: 60px;
     padding: 5px;
     color: black;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.2em;
 }
 
 /*child document images*/
