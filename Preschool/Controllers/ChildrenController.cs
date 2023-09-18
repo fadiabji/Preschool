@@ -33,7 +33,7 @@ namespace Preschool.Controllers
         {
             try
             {
-                if (id == null || _childrenService.GetChildren() == null)
+                if (id == null)
                 {
                     return NotFound();
                 }

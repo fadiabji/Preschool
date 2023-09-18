@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Subscription>
 
-@*@{
+@{
     var FirstName = Model.Select(s => s.Child.FirstName).FirstOrDefault();
     var LastName = Model.Select(s => s.Child.LastName).FirstOrDefault();
     var childName = FirstName + " " + LastName;
@@ -55,4 +55,3 @@
 </div>
 <br />
 
-*@
