@@ -52,6 +52,8 @@ namespace Preschool.Models
 
         public virtual ICollection<DocumentsCopies> DocumentsImage { get; set; }
 
+        public virtual ICollection<Attendance> Attendances { get; set; }
+
         public Child()
         {
             Subscriptions = new List<Subscription>();

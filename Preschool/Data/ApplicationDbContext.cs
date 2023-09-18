@@ -162,6 +162,8 @@ namespace Preschool.Data
         public DbSet<SubscriptionType> SubscriptionTypes { get; set; }
 
 
+        public DbSet<Attendance> Attendances  { get; set; }
+
 
     }
 

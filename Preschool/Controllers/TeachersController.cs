@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.EntityFrameworkCore;
 using Preschool.Data;
 using Preschool.Models;
@@ -16,10 +17,17 @@ namespace Preschool.Controllers
     {
         private readonly ITeacherService _teacherService;
         private readonly IClassroomService _classroomService;
-        public TeachersController(ITeacherService teacherService, IClassroomService classroomService)
+        private readonly IAttendanceService _attendanceService;
+        private readonly IChildService _childService;
+        public TeachersController(ITeacherService teacherService,
+                                  IClassroomService classroomService,
+                                  IAttendanceService attendanceService,
+                                  IChildService childService)
         {
             _teacherService = teacherService;
             _classroomService = classroomService;
+            _attendanceService = attendanceService;
+            _childService = childService;
         }
 
         // GET: Teacherren
@@ -67,8 +75,6 @@ namespace Preschool.Controllers
                 }
                 var childrenListbyclassroom = teacher.Classroom.Children.ToList();
 
-               
-
                 return View(childrenListbyclassroom);
 
             }
@@ -78,18 +84,25 @@ namespace Preschool.Controllers
             }
 
         }
-
-        public async Task<IActionResult> ChildCheckIn(int? id)
+        [HttpPost("ChildCheckIn/{id}")]
+        public async Task<IActionResult> ChildCheckIn(int id)
         {
             try
             {
-                if (id == null || _teacherService.GetTeachers() == null)
+                if (id == 0)
                 {
                     return NotFound();
                 }
-                Teacher teacher = await _teacherService.GetTeacherById(id);
+                Child child = await _childService.GetChildById(id);
+                if(child  == null)
+                {
+                    return NotFound();
+                }
+                child.Attendances.Add(new Attendance { ChildId = id, Date = DateTime.Now, Status = true }); ;
+                _childService.UpdateChildEnrollment(child);
 
-                return View(teacher);
+                //return RedirectToAction(nameof(GetChildByClassRoom), new { teacherId = id });
+                return Ok($"{child.FirstName + child.LastName} Checked In");
 
             }
             catch (Exception)
@@ -98,18 +111,25 @@ namespace Preschool.Controllers
             }
 
         }
-
-        public async Task<IActionResult> ChildCheckOut(int? id)
+        [HttpPost("ChildCheckOut/{id}")]
+        public async Task<IActionResult> ChildCheckOut(int id)
         {
             try
             {
-                if (id == null || _teacherService.GetTeachers() == null)
+                if (id == 0)
                 {
                     return NotFound();
                 }
-                Teacher teacher = await _teacherService.GetTeacherById(id);
+                Child child = await _childService.GetChildById(id);
+                if (child == null)
+                {
+                    return NotFound();
+                }
+                child.Attendances.Add(new Attendance { ChildId = id, Date = DateTime.Now, Status = false }); ;
+                _childService.UpdateChildEnrollment(child);
 
-                return View(teacher);
+                //return RedirectToAction(nameof(GetChildByClassRoom), new { teacherId = id });
+                return Ok($"{child.FirstName} {child.LastName} Checked Out");
 
             }
             catch (Exception)

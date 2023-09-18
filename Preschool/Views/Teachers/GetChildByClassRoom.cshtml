@@ -9,29 +9,21 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName))
+                Child Name
             </th>
+           
             <th>
-                @Html.DisplayNameFor(model => model.LastName))
+                Class Room
             </th>
+           
             <th>
-                @Html.DisplayNameFor(model => model.FatherName))
+                Last Check in - out
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.MotherName))
+                Attendances
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth))
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EnrolDate))
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Classroom))
-            </th>
-            <th></th>
-            <th></th>
-            <th></th>
+
         </tr>
     </thead>
     <tbody id="myTable">
@@ -39,34 +31,36 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @item.FirstName @item.LastName
+                </td>
+                
+                <td>
+                    @item.Classroom.Name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
+                    @item.Attendances.OrderByDescending(a => a.Date).Select(a => a.Date).FirstOrDefault()
                 </td>
+                
                 <td>
-                    @Html.DisplayFor(modelItem => item.FatherName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MotherName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateOfBirth)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EnrolDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Classroom.Name)
-                </td>
-                <td>
-                    Check in
-                </td>
-                <td>
-                    Check out
-                </td>
+                   
+                        @if (item.Attendances.OrderByDescending(a => a.Date).Select(a => a.Status).FirstOrDefault())
+                        {
+                        <label class="switch" data-route-id="@item.Id">
+                            <input type="checkbox" id="slider-@item.Id" checked> <!-- Unique ID for each switch -->
+                            <span class="slider round" ></span>
+                        </label>
+                        <span id="result-@item.Id" style="color:red"></span> <!-- Unique ID for result -->
+                        }
+                        else
+                        {
+                        <label class="switch" data-route-id="@item.Id">
 
-                <td>
+                            <input type="checkbox" id="slider-@item.Id"> <!-- Unique ID for each switch -->
+                            <span class="slider round" ></span>
+                        </label>
+
+                        <span id="result-@item.Id" style="color:green" ></span> <!-- Unique ID for result -->
+                        }
                 </td>
             </tr>
         }
@@ -84,5 +78,32 @@
                 });
             });
         });
+
+        document.querySelectorAll("input[type='checkbox']").forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                var isChecked = this.checked;
+                var routeId = this.parentElement.getAttribute("data-route-id");
+                var action = isChecked ? "ChildCheckIn" : "ChildCheckOut";
+                var resultId = "result-" + routeId; // Unique result ID
+
+                $.ajax({
+                    type: "POST",
+                    url: `/${action}/${routeId}`,
+                    success: function (response) {
+                        // Update the unique result span with the response
+                        document.getElementById(resultId).innerText = response;
+                    },
+                    error: function (error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+        });
+
     </script>
 }
+
+
+
+
+
