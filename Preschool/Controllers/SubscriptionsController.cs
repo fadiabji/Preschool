@@ -68,7 +68,7 @@ namespace Preschool.Controllers
         // GET: Subscriptions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _subscriptionService.GetSubscriptions() == null)
+            if (id == null)
             {
                 return NotFound();
             }

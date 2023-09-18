@@ -6,6 +6,11 @@
 
 
 function printBill(subId) {
+
+    const min = 10000; // Minimum 5-digit number (inclusive)
+    const max = 99999; // Maximum 5-digit number (inclusive)
+    const random5DigitNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
     // Get the HTML content of the order summary
     var childName = document.getElementById("childName").innerHTML;
 
@@ -68,7 +73,7 @@ function printBill(subId) {
 
         '<div class="invoice-details">' +
         '<h2>Invoice Details</h2>' +
-        '<p>Invoice Number: #12345</p>' +
+        '<p>Invoice Number: ' + random5DigitNumber +'</p>' +
         '<p>Invoice Date: ' + formattedCurrentDate + '</p>' +
         '<p>Due Date: ' + formattedOneMonthFromNow + '</p>' +
         '<p>Child Name: ' + childName + ' </p>' +

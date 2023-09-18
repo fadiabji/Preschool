@@ -67,7 +67,7 @@ namespace Preschool.Controllers
         // GET: Classes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _classroomService.GetClasses() == null)
+            if (id == null )
             {
                 return NotFound();
             }
@@ -117,7 +117,7 @@ namespace Preschool.Controllers
         // GET: Classes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _classroomService.GetClasses() == null)
+            if (id == null )
             {
                 return NotFound();
             }
