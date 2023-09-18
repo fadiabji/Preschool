@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.PaymentComplete)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChildId)
+                Child Name
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SubscriptionType)
@@ -47,7 +47,7 @@
                 @Html.DisplayFor(modelItem => item.PaymentComplete)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ChildId)
+                @item.Child.FirstName @item.Child.LastName
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SubscriptionType.Description)

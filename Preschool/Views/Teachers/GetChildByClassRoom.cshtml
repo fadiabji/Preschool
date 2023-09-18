@@ -1,36 +1,35 @@
-﻿@model IEnumerable<Preschool.Models.Teacher>
+﻿@model IEnumerable<Child>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    
+<h1>Childern List to Classroom @Model.Select(c => c.Classroom.Name).FirstOrDefault()</h1>
 
 <input class="form-control" id="myInput" type="text" placeholder="Search..">
 <br />
-
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.FirstName))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.LastName))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
+                @Html.DisplayNameFor(model => model.FatherName))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegistedAt)
+                @Html.DisplayNameFor(model => model.MotherName))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Classroom)
+                @Html.DisplayNameFor(model => model.DateOfBirth))
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnrolDate))
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Classroom))
+            </th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
@@ -46,26 +45,34 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.FatherName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MotherName)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.DateOfBirth)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RegistedAt)
+                    @Html.DisplayFor(modelItem => item.EnrolDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Classroom.Name)
                 </td>
                 <td>
-                    <a asp-controller="Teachers" asp-action="TeacherPage" asp-route-id="@item.Id">Teacher Page</a>
+                    Check in
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    Check out
+                </td>
+
+                <td>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
 
 @section Scripts {
     <script>

@@ -17,12 +17,12 @@ namespace Preschool.Services
 
         public async Task<IEnumerable<Child>> GetChildren()
         {
-            return await _db.Childern.Include(c => c.DocumentsImage).ToListAsync();
+            return await _db.Childern.ToListAsync();
         }
 
         public async Task<Child> GetChildById(int? id)
         {
-            return await _db.Childern.Include(c => c.DocumentsImage).SingleOrDefaultAsync(c => c.Id == id);
+            return await _db.Childern.Include(c => c.DocumentsImage).Include(c => c.Subscriptions).FirstOrDefaultAsync(c => c.Id == id);
             //return await _db.Childern.Include(c => c.DocumentsImage).FirstOrDefaultAsync(x => x.Id == id);
         }
 
