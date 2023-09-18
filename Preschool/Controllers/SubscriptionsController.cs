@@ -32,11 +32,7 @@ namespace Preschool.Controllers
         // GET: Subscriptions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _subscriptionService.GetSubscriptions() == null)
-            {
-                return NotFound();
-            }
-
+           
             var subscription = await _subscriptionService.GetSubscriptionById(id);
             if (subscription == null)
             {
@@ -124,18 +120,22 @@ namespace Preschool.Controllers
         // GET: Subscriptions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _subscriptionService.GetSubscriptions() == null)
+            try
             {
-                return NotFound();
-            }
+                var subscription = await _subscriptionService.GetSubscriptionById(id);
+                if (subscription == null)
+                {
+                    return NotFound();
+                }
 
-            var subscription = await _subscriptionService.GetSubscriptionById(id);
-            if (subscription == null)
+                return View(subscription);
+            }
+            catch (Exception)
             {
-                return NotFound();
-            }
 
-            return View(subscription);
+                throw;
+            }
+            
         }
 
         // POST: Subscriptions/Delete/5

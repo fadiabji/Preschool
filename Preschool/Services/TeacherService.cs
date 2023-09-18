@@ -14,12 +14,12 @@ namespace Preschool.Services
         }
         public async Task<IEnumerable<Teacher>> GetTeachers()
         {
-            return await _db.Teachers.Include(c => c.DocumentsImage).ToListAsync();
+            return await _db.Teachers.ToListAsync();
         }
 
         public async Task<Teacher> GetTeacherById(int? id)
         {
-            return await _db.Teachers.Include(c => c.DocumentsImage).SingleOrDefaultAsync(c => c.Id == id);
+            return await _db.Teachers.FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public void RegistTeacher(Teacher teacher)

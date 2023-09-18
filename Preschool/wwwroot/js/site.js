@@ -5,19 +5,83 @@
 
 
 
-function printBill(subscriptionId) {
+function printBill(subId) {
     // Get the HTML content of the order summary
-    var subTypeName = document.getElementById("subTypeName").innerHTML;
-    var createdAt = document.getElementById("createdAt").innerHTML;
-    var expiresAt = document.getElementById("expiresAt").innerHTML;
-    var price = document.getElementById("price").innerHTML;
-    var subStatus = document.getElementById("subStatus").innerHTML;
+    var childName = document.getElementById("childName").innerHTML;
 
+
+    var info = document.getElementById(subId).innerHTML;
     // Create a new window for printing
     var printWindow = window.open('', '', 'height=600,width=800');
 
-    // Write the order summary HTML to the print window
-    printWindow.document.write('<html><head><title>Bill no:</title></head><body>' + subTypeName + '<br/>' + createdAt + '<br/>' + expiresAt + '<br/>' + price + '<br/>' + subStatus + '<br/>' + ' </body></html>');
+
+    // Create a new Date object for the current date
+    var currentDate = new Date();
+
+    // Define an array of month names
+    var monthNames = [
+        "January", "February", "March", "April",
+        "May", "June", "July", "August",
+        "September", "October", "November", "December"
+    ];
+
+    // Get the current month and year
+    var currentMonth = currentDate.getMonth();
+    var currentYear = currentDate.getFullYear();
+    // Calculate the next month
+    var nextMonth = currentMonth + 1;
+    var nextYear = currentYear;
+    // If the current month is December, adjust for the next year
+    if (nextMonth === 12) {
+        nextMonth = 0; // January
+        nextYear++;
+    }
+    // Create a Date object for one month from now
+    var oneMonthFromNow = new Date(nextYear, nextMonth, currentDate.getDate());
+
+    // Format the current date and one month from now
+    var formattedCurrentDate = monthNames[currentMonth] + " " + currentDate.getDate() + ", " + currentYear;
+    var formattedOneMonthFromNow = monthNames[nextMonth] + " " + oneMonthFromNow.getDate() + ", " + nextYear;
+
+
+    var baseUrl = '@Url.Content("~/")';
+
+    var billContent = '<html><head><title>Bill</title><style>' +
+        'body {font-family: Arial, sans-serif;}' +
+        '.bill-container {width: 80%; margin: 0 auto;}' +
+        '.bill-header {text-align: center; background-color: #007BFF; color: white; padding: 10px;}' +
+        '.company-logo {max-width: 150px; max-height: 150px; margin: 0 auto; display: block;}' +
+        '.company-info {text-align: center; margin-top: 10px;}' +
+        '.invoice-details {margin: 20px; padding: 20px; border: 1px solid #ccc;}' +
+        '.invoice-footer {text-align: center; margin-top: 20px;}' +
+        '.qr-code {margin-top: 10px; max-width: 150px; max-height: 150px;}' +
+        '</style></head><body>' +
+
+        '<div class="invoice-header">' +
+        '<img src="' + baseUrl + 'DocumentsCopies/QR_Code.png" alt="Company Logo" class="company-logo">' +
+        '<h1>The English Kindergarten - TEK</h1>' +
+        '<p>Villa No.19 Mansour Bin Talha St 652 - Doha, Qatar</p>' +
+        '<p>Phone: 44829505</p>' +
+        '<p>Mobile: 55116312</p>' +
+        '<p>Email: info@tek.com.qa</p>' +
+        '</div>' +
+
+        '<div class="invoice-details">' +
+        '<h2>Invoice Details</h2>' +
+        '<p>Invoice Number: #12345</p>' +
+        '<p>Invoice Date: ' + formattedCurrentDate + '</p>' +
+        '<p>Due Date: ' + formattedOneMonthFromNow + '</p>' +
+        '<p>Child Name: ' + childName + ' </p>' +
+        info +
+        '</div>' +
+
+        '<div class="invoice-footer">' +
+        '<p>Thank you for choosing our daycare/preschool services.</p>' +
+        '<!-- Add any additional footer information here -->' +
+        '<img src="' + baseUrl + 'DocumentsCopies/QR_Code.png" alt="QR Code" class="qr-code"/>' +
+        '</div></body></html>';
+
+    printWindow.document.write(billContent);
 
     // Print the window
     printWindow.print();

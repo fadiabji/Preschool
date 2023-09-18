@@ -26,6 +26,7 @@ namespace Preschool.Models
         
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name = "Start Teaching At")]
         public DateTime RegistedAt { get; set; }
 
         public bool  IsActive { get; set; }

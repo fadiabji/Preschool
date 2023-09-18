@@ -28,6 +28,97 @@ namespace Preschool.Controllers
             return View(await _teacherService.GetTeachers());
         }
 
+
+        public async Task<IActionResult> TeacherPage(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+                Teacher teacher = await _teacherService.GetTeacherById(id);
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+                return View(teacher);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public async Task<IActionResult> GetChildByClassRoom(int? teacherId)
+        {
+            try
+            {
+                if (teacherId == null)
+                {
+                    return NotFound();
+                }
+                Teacher teacher = await _teacherService.GetTeacherById(teacherId);
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+                var childrenListbyclassroom = teacher.Classroom.Children.ToList();
+
+               
+
+                return View(childrenListbyclassroom);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public async Task<IActionResult> ChildCheckIn(int? id)
+        {
+            try
+            {
+                if (id == null || _teacherService.GetTeachers() == null)
+                {
+                    return NotFound();
+                }
+                Teacher teacher = await _teacherService.GetTeacherById(id);
+
+                return View(teacher);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public async Task<IActionResult> ChildCheckOut(int? id)
+        {
+            try
+            {
+                if (id == null || _teacherService.GetTeachers() == null)
+                {
+                    return NotFound();
+                }
+                Teacher teacher = await _teacherService.GetTeacherById(id);
+
+                return View(teacher);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
         // GET: Teacherren/Details/5
         public async Task<IActionResult> Details(int? id)
         {

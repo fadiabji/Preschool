@@ -29,11 +29,16 @@ namespace Preschool.Controllers
             _subscriptionTypeService = subscriptionTypeService;
         }
 
-        public async Task<IActionResult> ChildPage(int id)
+        public async Task<IActionResult> ChildPage(int? id)
         {
             try
             {
-                var child = await _childrenService.GetChildById(id);
+                if (id == null || _childrenService.GetChildren() == null)
+                {
+                    return NotFound();
+                }
+                Child child = await _childrenService.GetChildById(id);
+                // use viewmodel to avoid the circulare referecne
                 return View(child);
 
             }
