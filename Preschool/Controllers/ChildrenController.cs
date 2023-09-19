@@ -40,26 +40,44 @@ namespace Preschool.Controllers
                     return NotFound();
                 }
                 Child child = await _childrenService.GetChildById(id);
-                // use viewmodel to avoid the circulare referecne
+                CheckSubscriptionsExpireDateToExpire(child);
                 return View(child);
-
             }
             catch (Exception)
             {
                 throw;
             }
-           
         }
 
+        public void CheckSubscriptionsExpireDateToExpire(Child child)
+        {
+            foreach(var sub in child.Subscriptions)
+            {
+                if (sub.ExpireAt.Date < DateTime.Now.Date)
+                {
+                    sub.IsActive = false;
+                    _childrenService.UpdateChildEnrollment(child);
+                }
+            }
+        }
         public async Task<IActionResult> ReNewSubscription(int id)
         {
             try
             {
                 var child = await _childrenService.GetChildById(id);
-                var renewsub = new ChildReNewSubscriptionVM { ChildId = id, ClassroomId = child.ClassroomId, SubscriptionTypId = child.Subscriptions.FirstOrDefault().SubscriptionTypeId };
-                ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
-                ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
-                return View(renewsub);
+                CheckSubscriptionsExpireDateToExpire(child);
+                if(child.Subscriptions.Any(s =>s.IsActive == true))
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    var renewsub = new ChildReNewSubscriptionVM { ChildId = id, ClassroomId = child.ClassroomId, SubscriptionTypId = child.Subscriptions.FirstOrDefault().SubscriptionTypeId };
+                    ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
+                    ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
+                    return View(renewsub);
+                }
+                
             }
             catch (Exception)
             {
