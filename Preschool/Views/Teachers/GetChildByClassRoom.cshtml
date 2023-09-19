@@ -23,6 +23,9 @@
             <th>
                 Attendances
             </th>
+            <th>
+                
+            </th>
 
         </tr>
     </thead>
@@ -49,7 +52,7 @@
                             <input type="checkbox" id="slider-@item.Id" checked> <!-- Unique ID for each switch -->
                             <span class="slider round" ></span>
                         </label>
-                        <span id="result-@item.Id" style="color:red"></span> <!-- Unique ID for result -->
+                        
                         }
                         else
                         {
@@ -59,8 +62,11 @@
                             <span class="slider round" ></span>
                         </label>
 
-                        <span id="result-@item.Id" style="color:green" ></span> <!-- Unique ID for result -->
                         }
+                </td>
+                <td>
+                    <span id="result-@item.Id" style="color:red"></span> <!-- Unique ID for result -->
+                    
                 </td>
             </tr>
         }
