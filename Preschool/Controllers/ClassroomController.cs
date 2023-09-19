@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Preschool.Services;
 
 namespace Preschool.Controllers
 {
+    [Authorize(Roles = ("Admin"))]
     public class ClassroomController : Controller
     {
         private readonly IClassroomService _classroomService;
@@ -67,7 +69,7 @@ namespace Preschool.Controllers
         // GET: Classes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _classroomService.GetClasses() == null)
+            if (id == null )
             {
                 return NotFound();
             }
@@ -117,7 +119,7 @@ namespace Preschool.Controllers
         // GET: Classes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _classroomService.GetClasses() == null)
+            if (id == null )
             {
                 return NotFound();
             }

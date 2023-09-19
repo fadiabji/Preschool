@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="bg-info text-white">All Teachers</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-secondary" asp-action="Create">Create New</a>
 </p>
 
 <input class="form-control" id="myInput" type="text" placeholder="Search..">
@@ -52,21 +52,24 @@
                     @Html.DisplayFor(modelItem => item.RegistedAt)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Classroom.Name)
+                    @Html.DisplayFor(modelItem => item.Classroom.Name) <i class="@item.Classroom.Icon"></i>
                 </td>
                 <td>
-                    <a asp-controller="Teachers" asp-action="TeacherPage" asp-route-id="@item.Id">Teacher Page</a>
+                    <a class="btn btn-sm  btn-info" asp-controller="Teachers" asp-action="TeacherPage" asp-route-id="@item.Id">Teacher Page</a>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-sm btn-primary"  asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<br />
+<br />
 
+<i class=""></i>
 @section Scripts {
     <script>
         $(document).ready(function () {
