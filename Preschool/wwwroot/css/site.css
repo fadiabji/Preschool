@@ -143,3 +143,14 @@ h1 {
     max-width: 100%;
     height: auto;
 }
+
+/*view more table */
+/* Hide all rows initially */
+.my-custom-table .table-row {
+    display: none;
+}
+
+/* Show the last ten rows */
+.my-custom-table .table-body tr:nth-last-child(-n+10) {
+    display: table-row;
+}

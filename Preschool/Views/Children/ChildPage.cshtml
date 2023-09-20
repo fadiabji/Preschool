@@ -16,7 +16,6 @@
 </div>
 
 
-
 <!-- Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -31,6 +30,16 @@
     </div>
 </div>
 <br />
+
+@*Attendnec schema*@
+<div class="row">
+    @await Component.InvokeAsync("Childattendance" , new {id = Model.Id})
+    <br />
+</div>
+
+<br />
+
+@*Child Documents*@
 <h1>Child Documents </h1>
 <div class="row">
     @foreach (var image in Model.DocumentsImage.Select(i => i.ImageFile))
@@ -50,8 +59,6 @@
 <br />
 <br />
 
-
-@*Attendnec schema*@
 
 
 

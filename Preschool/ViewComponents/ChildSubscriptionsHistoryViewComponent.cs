@@ -14,10 +14,8 @@ namespace Preschool.ViewComponents
         }
         public IViewComponentResult Invoke(int id)
         {
-            
             var childSubscriptionsHistory = _childService.GetChildById(id).Result.Subscriptions.OrderByDescending(s => s.CreatedAt).ToList();
             return View("Index", childSubscriptionsHistory);
-
         }
     }
 }
