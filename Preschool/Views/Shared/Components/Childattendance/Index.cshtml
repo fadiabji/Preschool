@@ -1,0 +1,94 @@
+﻿@using Preschool.Models.ViewModels;
+@model IEnumerable<Attendance>
+
+@{
+    var eveyDayAttendance = (from attendance in Model
+                           group attendance by attendance.Date.Day into everydayAttendance
+                           orderby everydayAttendance.Key
+                           select new ChildAttendanceVM
+                                   {
+                                       Id = everydayAttendance.Key,
+                                       Date = everydayAttendance.Select(a => a.Date).FirstOrDefault(),
+                                       EnterTime = TimeOnly.FromDateTime(everydayAttendance.Select(a => a.Date).Min()),
+                                       ExitTime = TimeOnly.FromDateTime(everydayAttendance.Select(a => a.Date).Max())
+                                   }).ToList();
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Date
+            </th>
+            <th>
+                Enter
+            </th>
+            <th>
+                Exit
+            </th>
+            <th>
+                Hours
+            </th>
+        </tr>
+    </thead>
+    <tbody id="myTable-1" class="table-body">
+        <!-- Add a placeholder for the last ten rows -->
+        @foreach (var item in eveyDayAttendance.Skip(Math.Max(0, eveyDayAttendance.Count - 10)))
+        {
+            <tr class="table-row">
+                <td>
+                    @item.Date.Date.ToString("yyyy/MM/dd")
+                </td>
+                <td>
+                    @item.EnterTime
+                </td>
+                <td>
+                    @item.ExitTime
+                </td>
+                <td>
+                    @item.AttendanceHours()
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Add a button to show more rows -->
+<button class="btn btn-sm  btn-info" style="height:25px;width:100px" id="showMoreButton-1">Show More >> </button>
+
+<br />
+<br />
+<br />
+<br />
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get references to elements
+            var table = document.querySelector('.my-custom-table');
+            var tableBody = document.getElementById('myTable-1');
+            var showMoreButton = document.getElementById('showMoreButton-1');
+
+            // Initialize a variable to keep track of the number of visible rows
+            var visibleRowCount = 10;
+
+            // Function to show additional rows
+            function showMoreRows() {
+                var rows = tableBody.getElementsByClassName('table-row');
+                for (var i = visibleRowCount; i < rows.length; i++) {
+                    rows[i].style.display = 'table-row';
+                }
+                // Update the visible row count
+                visibleRowCount = rows.length;
+                // Hide the "Show More" button if all rows are visible
+                if (visibleRowCount === rows.length) {
+                    showMoreButton.style.display = 'none';
+                }
+            }
+
+            // Attach a click event to the "Show More" button
+            showMoreButton.addEventListener('click', showMoreRows);
+        });
+    </script>
+}
