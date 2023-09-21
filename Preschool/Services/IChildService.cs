@@ -8,6 +8,8 @@ namespace Preschool.Services
         Task<IEnumerable<Child>> GetChildren();
         Task<Child> GetChildById(int? id);
 
+        Task<List<Child>> GetChildByClassroomId(int? id);
+
         void EnrollChild(Child child);
 
         void UpdateChildEnrollment(Child child);
