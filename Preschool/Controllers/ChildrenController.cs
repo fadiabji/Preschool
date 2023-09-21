@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,36 @@ namespace Preschool.Controllers
                 throw;
             }
         }
+
+
+        public async Task<IActionResult> AttendencePage()
+        {
+            var classroomsList = await _classroomService.GetClasses();
+            if (classroomsList != null)
+            {
+                return View(classroomsList);
+            }
+            else
+            {
+                return View(new List<Classroom>()); 
+            }
+        }
+
+        public async Task<IActionResult> GetChildByClassRoom(int id)
+        {
+            var childernlist = await _childrenService.GetChildByClassroomId(id);
+            if (childernlist != null)
+            {
+                return View(childernlist);
+            }
+            else
+            {
+                return View(new List<Child>());
+            }
+        }
+
+
+
 
         public void CheckSubscriptionsExpireDateToExpire(Child child)
         {

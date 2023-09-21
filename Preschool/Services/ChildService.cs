@@ -26,6 +26,11 @@ namespace Preschool.Services
             //return await _db.Childern.Include(c => c.DocumentsImage).FirstOrDefaultAsync(x => x.Id == id);
         }
 
+
+        public  async Task<List<Child>> GetChildByClassroomId(int? id)
+        {
+            return  await Task.Run(()=> _db.Childern.Where(c => c.ClassroomId == id).ToList());
+        }
         public void EnrollChild(Child child)
         {
             _db.Childern.Add(child);
