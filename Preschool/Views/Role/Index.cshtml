@@ -4,7 +4,14 @@
 }
 
 <h1 class="bg-info text-white">All Roles</h1>
-<a asp-action="Create" class="btn btn-secondary">Create a Role</a>
+<div>
+    <p>
+        <a asp-action="Create" class="btn btn-secondary">Create a Role</a>
+    </p>
+    <p>
+        <button class="btn btn-secondary" onclick="printPage()">Print</button>
+    </p>
+</div>
 
 <table class="table table-sm  ">
     <tr><th>ID</th><th>Name</th><th>Users</th><th>Update</th><th>Delete</th></tr>
