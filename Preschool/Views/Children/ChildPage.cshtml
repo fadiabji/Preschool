@@ -8,8 +8,6 @@
 <h1>Child Page</h1>
 
 @*subscirption history*@
-
-
 <div class="row">
     @await Component.InvokeAsync("ChildSubscriptionsHistory" , new {id = Model.Id})
     <br />
@@ -36,7 +34,6 @@
     @await Component.InvokeAsync("Childattendance" , new {id = Model.Id})
     <br />
 </div>
-
 <br />
 
 @*Child Documents*@
@@ -53,7 +50,6 @@
         </div>
     }
 </div>
-
 <br/>
 <br/>
 <br />

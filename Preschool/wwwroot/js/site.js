@@ -94,3 +94,30 @@ function printBill(subId) {
     // Close the window
     printWindow.close();
 }
+
+
+
+
+function printPage() {
+    // Apply print styles
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = '/css/print-styles.css'; // Adjust the path to your CSS file
+    document.getElementsByTagName('head')[0].appendChild(link);
+
+    // Remove the print button from the printed page
+    var printButton = document.querySelector('.btn-secondary');
+    if (printButton) {
+        printButton.style.display = 'none';
+    }
+
+    // Trigger the print dialog
+    window.print();
+
+    // Restore the original styles and show the print button
+    link.parentNode.removeChild(link);
+    if (printButton) {
+        printButton.style.display = 'block';
+    }
+}

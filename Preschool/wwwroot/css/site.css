@@ -154,3 +154,7 @@ h1 {
 .my-custom-table .table-body tr:nth-last-child(-n+10) {
     display: table-row;
 }
+
+main{
+   margin-bottom:150px;
+}

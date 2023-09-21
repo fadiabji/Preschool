@@ -65,7 +65,7 @@
                     @item.Classroom.Name
                 </td>
                 <td>
-                    @item.Attendances.OrderByDescending(a => a.Date).Select(a => a.Date).FirstOrDefault()
+                    @item.Attendances.OrderByDescending(a => a.Date).Select(a => a.Date).FirstOrDefault().ToString("yyyy/MM/dd HH:mm tt")
                 </td>
                 
                 <td>
