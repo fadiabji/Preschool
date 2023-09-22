@@ -11,7 +11,7 @@
                                        Date = everydayAttendance.Select(a => a.Date).FirstOrDefault(),
                                        EnterTime = TimeOnly.FromDateTime(everydayAttendance.Select(a => a.Date).Min()),
                                        ExitTime = TimeOnly.FromDateTime(everydayAttendance.Select(a => a.Date).Max())
-                                   }).ToList();
+                                   }).OrderByDescending(a =>a.Date).ToList();
 }
 
 
