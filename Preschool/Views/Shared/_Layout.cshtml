@@ -58,6 +58,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="SubscriptionTypes" asp-action="Index">Subscription types</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Assets" asp-action="Index">Assets</a>
+                        </li>
                         @if (User.IsInRole("Teacher") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">

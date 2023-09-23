@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.ContentModel;
 using Preschool.Data;
 using Preschool.Models;
 using Preschool.Services;
@@ -13,22 +14,22 @@ using Preschool.Services;
 namespace Preschool.Controllers
 {
     [Authorize(Roles = ("Admin"))]
-    public class ClassroomController : Controller
+    public class AssetsController : Controller
     {
-        private readonly IClassroomService _classroomService;
+        private readonly IAssetsService _assetsService;
 
-        public ClassroomController(IClassroomService classService)
+        public AssetsController(IAssetsService assetsService)
         {
-            _classroomService = classService;
+            _assetsService = assetsService;
         }
 
-        // GET: Classes
+        // GET: Assets
         public async Task<IActionResult> Index()
         {
-            return View(await _classroomService.GetClasses());
+              return View(await _assetsService.GetAssets());
         }
 
-        // GET: Classes/Details/5
+        // GET: Assets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,60 +37,61 @@ namespace Preschool.Controllers
                 return NotFound();
             }
 
-            var @class = await _classroomService.GetClassById(id);
-            if (@class == null)
+            var asset = await _assetsService.GetAssetById(id);
+            if (asset == null)
             {
                 return NotFound();
             }
 
-            return View(@class);
+            return View(asset);
         }
 
-        // GET: Classes/Create
+        // GET: Assets/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Classes/Create
+        // POST: Assets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Classroom @class)
+        public async Task<IActionResult> Create(Models.Asset asset)
         {
             if (ModelState.IsValid)
             {
-                await Task.Run(()=> _classroomService.CreateClass(@class));
+
+                await Task.Run(() => _assetsService.AddAsset(asset));
                 return RedirectToAction(nameof(Index));
             }
-            return View(@class);
+            return View(asset);
         }
 
-        // GET: Classes/Edit/5
+        // GET: Assets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null )
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var @class =  await _classroomService.GetClassById(id);
-            if (@class == null)
+            var asset = await _assetsService.GetAssetById(id);
+            if (asset == null)
             {
                 return NotFound();
             }
-            return View(@class);
+            return View(asset);
         }
 
-        // POST: Classes/Edit/5
+        // POST: Assets/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Classroom @class)
+        public async Task<IActionResult> Edit(int id, Models.Asset asset)
         {
-            if (id != @class.Id)
+            if (id != asset.Id)
             {
                 return NotFound();
             }
@@ -98,11 +100,11 @@ namespace Preschool.Controllers
             {
                 try
                 {
-                    await Task.Run(()=>_classroomService.UpdateClass(@class));
+                    await Task.Run(()=>_assetsService.UpdateAsset(asset));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClassExists(@class.Id))
+                    if (!AssetExists(asset.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +115,10 @@ namespace Preschool.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@class);
+            return View(asset);
         }
 
-        // GET: Classes/Delete/5
+        // GET: Assets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null )
@@ -124,41 +126,37 @@ namespace Preschool.Controllers
                 return NotFound();
             }
 
-            var @class = await _classroomService.GetClassById(id);
-            if (@class == null)
+            var asset = await _assetsService.GetAssetById(id);
+            if (asset == null)
             {
                 return NotFound();
             }
 
-            return View(@class);
+            return View(asset);
         }
 
-        // POST: Classes/Delete/5
+        // POST: Assets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var assets = await _assetsService.GetAssets();
+            if (assets == null)
             {
-                var @class = await _classroomService.GetClassById(id);
-                if (@class != null)
-                {
-                    _classroomService.RemoveClass(@class);
-                }
-
-                return RedirectToAction(nameof(Index));
+                return Problem("Entity set 'ApplicationDbContext.Assets'  is null.");
             }
-            catch (Exception)
+            var asset = assets.FirstOrDefault(a => a.Id == id);
+            if (asset != null)
             {
-
-                throw;
+                _assetsService.RemoveAsset(asset);
             }
             
+            return RedirectToAction(nameof(Index));
         }
 
-        private bool ClassExists(int id)
+        private bool AssetExists(int id)
         {
-          return _classroomService.IsExists(id);
+          return _assetsService.IsExists(id);
         }
     }
 }
