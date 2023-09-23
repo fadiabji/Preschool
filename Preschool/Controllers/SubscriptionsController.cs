@@ -18,11 +18,13 @@ namespace Preschool.Controllers
     {
         private readonly ISubscriptionService _subscriptionService;
         private readonly ISubscriptionTypeService _subscriptionTypeService;
+        private readonly IChildService _childService;
 
-        public SubscriptionsController(ISubscriptionService subscriptionService, ISubscriptionTypeService subscriptionTypeService)
+        public SubscriptionsController(ISubscriptionService subscriptionService, ISubscriptionTypeService subscriptionTypeService, IChildService childService)
         {
             _subscriptionService = subscriptionService;
             _subscriptionTypeService = subscriptionTypeService;
+            _childService = childService;
         }
 
         // GET: Subscriptions
@@ -47,7 +49,9 @@ namespace Preschool.Controllers
         // GET: Subscriptions/Create
         public IActionResult Create()
         {
-            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Description");
+            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
+            ViewData["ChildId"] = new SelectList(_childService.GetChildren().Result, "Id", "FullName");
+
             return View();
         }
 
@@ -58,14 +62,28 @@ namespace Preschool.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Subscription subscription)
         {
+            if (IsValidChildId(subscription.ChildId))
+            {
+                ModelState.AddModelError("ChildId", "This child has already an active subscription.");
+            }
             if (ModelState.IsValid)
             {
-               _subscriptionService.AddSubscription(subscription);
+                subscription.CreatedAt = DateTime.Now.Date;
+                subscription.ExpireAt = subscription.CreatedAt.AddMonths(await Task.Run(() => _subscriptionTypeService.GetSubscriptionTypeById(subscription.SubscriptionTypeId).Result.DurationMonth));
+                subscription.IsActive = true;
+                await Task.Run(() => _subscriptionService.AddSubscription(subscription));
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SubscriptionTypeId"] = new SelectList(await Task.Run(()=>_subscriptionTypeService.GetSubscriptionTypes().Result), "Id", "Description", subscription.SubscriptionTypeId);
+            ViewData["SubscriptionTypeId"] = new SelectList(await Task.Run(()=>_subscriptionTypeService.GetSubscriptionTypes().Result), "Id", "Name", subscription.SubscriptionTypeId);
+            ViewData["ChildId"] = new SelectList(_childService.GetChildren().Result, "Id", "FullName", subscription.ChildId);
             return View(subscription);
         }
+
+        private bool IsValidChildId(int childId)
+        {
+            return _childService.GetChildById(childId).Result.Subscriptions.Any(s => s.IsActive == true);
+        }
+
 
         // GET: Subscriptions/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -80,7 +98,7 @@ namespace Preschool.Controllers
             {
                 return NotFound();
             }
-            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Description", subscription.SubscriptionTypeId);
+            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name", subscription.SubscriptionTypeId);
             return View(subscription);
         }
 
@@ -115,7 +133,8 @@ namespace Preschool.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Description", subscription.SubscriptionTypeId);
+            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name", subscription.SubscriptionTypeId);
+            ViewData["ChildId"] = new SelectList(_childService.GetChildren().Result, "Id", "FullName");
             return View(subscription);
         }
 

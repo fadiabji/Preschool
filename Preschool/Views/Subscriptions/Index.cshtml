@@ -61,12 +61,16 @@
                     @Html.DisplayFor(modelItem => item.SubscriptionType.Name)
                 </td>
                 <td>
-                    @if(item.IsActive)
+                    @if (item.IsActive && item.ExpireAt.Date <= DateTime.Now.Date.AddDays(7))
                     {
-                    <p style="color:#12b800;"><b>Active</b></p>
+                        <p style="color:#F59B08;"><b>A week to Expire</b></p>
+                    }else if(item.IsActive)
+                    {
+                        <p style="color:#12b800;"><b>Active</b></p>
+                        
                     }else
                     {
-                    <p style="color:#ff0000;"><b>Expired</b></p>
+                        <p style="color:#ff0000;"><b>Expired</b></p>
                     }
                 </td>
                 <td>

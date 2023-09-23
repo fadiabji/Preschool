@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.ExceptionServices;
 
 namespace Preschool.Models
 {
@@ -18,6 +19,8 @@ namespace Preschool.Models
         [PersonalData]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        public string FullName { get { return FirstName + " " + LastName; } } // Computed property
 
         [Required]
         [PersonalData]
@@ -58,5 +61,6 @@ namespace Preschool.Models
         {
             Subscriptions = new List<Subscription>();
         }
+
     }
 }
