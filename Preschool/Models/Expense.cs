@@ -15,8 +15,8 @@ namespace Preschool.Models
         [Required(ErrorMessage = "Please enter a description.")]
         public string Description { get; set; }
 
+        [Display(Name = "Registered At")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; }
+        public DateTime RegisterdAt { get; set; }
     }
 }
