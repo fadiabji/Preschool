@@ -32,6 +32,7 @@ builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<ISubscriptionTypeService, SubscriptionTypeService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IAttendanceService,AttendanceService >();
+builder.Services.AddScoped<IAssetsService,AssetsService>();
 
 
 var app = builder.Build();

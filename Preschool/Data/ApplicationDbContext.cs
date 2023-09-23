@@ -161,6 +161,7 @@ namespace Preschool.Data
         public DbSet<Attendance> Attendances  { get; set; }
 
         public DbSet<Asset> Assets { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
 
     }
 
