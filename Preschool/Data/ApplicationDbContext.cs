@@ -152,18 +152,15 @@ namespace Preschool.Data
 
         public DbSet<TeacherDocuemtnsCopy> TeacherDocuemtnsCopies { get; set; }
 
-
         public DbSet<ChildDocumentsCopy> ChildDocumentsCopies { get; set; }
-
 
         public DbSet<Subscription> Subscriptions { get; set; }
 
-
         public DbSet<SubscriptionType> SubscriptionTypes { get; set; }
-
 
         public DbSet<Attendance> Attendances  { get; set; }
 
+        public DbSet<Asset> Assets { get; set; }
 
     }
 

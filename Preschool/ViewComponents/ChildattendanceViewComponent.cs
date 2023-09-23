@@ -13,7 +13,7 @@ namespace Preschool.ViewComponents
 
         public IViewComponentResult Invoke( int id)
         {
-            var childattendnce = _childService.GetChildById(id).Result.Attendances.OrderByDescending(a => a.Date).ToList();
+            var childattendnce = _childService.GetChildById(id).Result.Attendances.OrderBy(a => a.Date).ToList();
             return View("Index", childattendnce);
         }
     }

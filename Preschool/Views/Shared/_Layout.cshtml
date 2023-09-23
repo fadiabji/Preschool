@@ -50,13 +50,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Admin</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Classroom" asp-action="Index">ClassRooms</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Classroom" asp-action="Index">Classrooms</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Subscriptions" asp-action="Index">Subscriptions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SubscriptionTypes" asp-action="Index">Subscriptiontypes</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="SubscriptionTypes" asp-action="Index">Subscription types</a>
                         </li>
                         @if (User.IsInRole("Teacher") || User.IsInRole("Admin"))
                         {
