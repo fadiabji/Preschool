@@ -247,7 +247,7 @@ namespace Preschool.Controllers
             teacher.DateOfBirth = teachervm.DateOfBirth;
             teacher.IsActive = teachervm.IsActive;
             teacher.ClassroomId = teachervm.ClassroomId;
-            teacher.DocumentsImage.Clear();
+            var oldTeacherDocuments = teacher.DocumentsImage.ToList();
 
             if (id != teacher.Id)
             {
@@ -268,7 +268,10 @@ namespace Preschool.Controllers
                         {
                             teacher.DocumentsImage = new List<DocumentsCopies>();
                         }
-                        teacher.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
+                        if (!oldTeacherDocuments.Any(d => d.ImageFile == img.FileName))
+                        {
+                            teacher.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
+                        }
                     }
                     await Task.Run(() => _teacherService.UpdateTeacherRegistration(teacher));
                 }
