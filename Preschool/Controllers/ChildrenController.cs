@@ -278,12 +278,10 @@ namespace Preschool.Controllers
             child.DateOfBirth = childvm.DateOfBirth;
             child.EnrolDate = childvm.EnrolDate;
             child.ClassroomId = childvm.ClassroomId;
-            child.DocumentsImage.Clear();
+            var oldChildDocuments = child.DocumentsImage.ToList();
 
-            //list.Where(w => w.Name == "height").ToList().ForEach(s => s.Value = 30);
 
             child.Subscriptions.Where(s => s.ChildId == childvm.Id).ToList().ForEach(s => s.SubscriptionTypeId = childvm.SubscriptionTypeId);
-            //child.Subscriptions.FirstOrDefault(s => s.SubscriptionTypeId == childvm.SubscriptionTypeId);
             if (id != child.Id)
             {
                 return NotFound();
@@ -303,7 +301,11 @@ namespace Preschool.Controllers
                         {
                             child.DocumentsImage = new List<DocumentsCopies>();
                         }
-                        child.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
+                        if (!oldChildDocuments.Any(d => d.ImageFile == img.FileName))
+                        {
+                            child.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
+                        }
+                        
                     }
                     await Task.Run(() => _childrenService.UpdateChildEnrollment(child));
                 }
