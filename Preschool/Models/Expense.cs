@@ -18,5 +18,7 @@ namespace Preschool.Models
         [Display(Name = "Registered At")]
         [DataType(DataType.Date)]
         public DateTime RegisterdAt { get; set; }
+        [Required]
+        public string BuyerEmail { get; set; }
     }
 }

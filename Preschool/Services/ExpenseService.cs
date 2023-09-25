@@ -15,6 +15,7 @@ namespace Preschool.Services
         }
         public void AddExpense(Expense expense)
         {
+            
             _db.Expenses.Add(expense);
             _db.SaveChanges();
         }

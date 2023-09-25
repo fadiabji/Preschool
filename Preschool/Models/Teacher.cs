@@ -17,7 +17,11 @@ namespace Preschool.Models
         [PersonalData]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        
+
+
+        public string FullName { get { return FirstName + " " + LastName; } } // Computed property
+
+
         [Required]
         [PersonalData]
         [Display(Name = "Date Of Birth")]
