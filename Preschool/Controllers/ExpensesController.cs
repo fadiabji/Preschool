@@ -13,7 +13,7 @@ using Preschool.Services;
 
 namespace Preschool.Controllers
 {
-    [Authorize(Roles = ("Admin"))]
+    
     public class ExpensesController : Controller
     {
         private readonly IExpenseSevice _expenseSevice;
@@ -22,13 +22,14 @@ namespace Preschool.Controllers
         {
             _expenseSevice = expenseSevice;
         }
-
+        [Authorize(Roles = ("Admin"))]
         // GET: Expenses
         public async Task<IActionResult> Index()
         {
             return View(await _expenseSevice.GetExpenses());
         }
 
+        [Authorize(Roles = ("Admin"))]
         // GET: Expenses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -45,13 +46,14 @@ namespace Preschool.Controllers
 
             return View(expense);
         }
-
+        [Authorize(Roles = ("Admin,Teacher"))]
         // GET: Expenses/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = ("Admin,Teacher"))]
         // POST: Expenses/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -61,12 +63,18 @@ namespace Preschool.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                //expense.BuyerEmail = User.Identity.Name; 
                 await Task.Run(() => _expenseSevice.AddExpense(expense));
+                if (!User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(expense);
         }
+        [Authorize(Roles = ("Admin"))]
 
         // GET: Expenses/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -83,6 +91,7 @@ namespace Preschool.Controllers
             }
             return View(expense);
         }
+        [Authorize(Roles = ("Admin"))]
 
         // POST: Expenses/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -117,6 +126,7 @@ namespace Preschool.Controllers
             }
             return View(expense);
         }
+        [Authorize(Roles = ("Admin"))]
 
         // GET: Expenses/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -133,8 +143,11 @@ namespace Preschool.Controllers
             }
 
             return View(expense);
+
         }
 
+
+        [Authorize(Roles = ("Admin"))]
         // POST: Expenses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -153,7 +166,7 @@ namespace Preschool.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = ("Admin"))]
         private bool ExpenseExists(int id)
         {
             return _expenseSevice.IsExists(id);

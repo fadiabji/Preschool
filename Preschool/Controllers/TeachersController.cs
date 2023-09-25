@@ -15,8 +15,7 @@ using Preschool.Services;
 namespace Preschool.Controllers
 {
     
-    [Authorize(Roles =("Admin"))]
-    [Authorize(Roles = ("Teacher"))]
+    [Authorize(Roles = "Admin,Teacher")]
     public class TeachersController : Controller
     {
         private readonly ITeacherService _teacherService;
