@@ -18,7 +18,7 @@ function printBill(subId) {
     var info = document.getElementById(subId).innerHTML;
     // Create a new window for printing
     var printWindow = window.open('', '', 'height=600,width=800');
-
+    
 
     // Create a new Date object for the current date
     var currentDate = new Date();
@@ -51,7 +51,7 @@ function printBill(subId) {
 
     var baseUrl = '@Url.Content("~/")';
 
-    var billContent = '<html><head><title>Bill</title><style>' +
+    var billContent = '<html><head><title>'+childName+'_Bill_Nr:'+ random5DigitNumber +' </title><style>' +
         'body {font-family: Arial, sans-serif;}' +
         '.bill-container {width: 80%; margin: 0 auto;}' +
         '.bill-header {text-align: center; background-color: #007BFF; color: white; padding: 10px;}' +
@@ -63,7 +63,7 @@ function printBill(subId) {
         '</style></head><body>' +
 
         '<div class="invoice-header">' +
-        '<img src="' + baseUrl + 'DocumentsCopies/QR_Code.png" alt="Company Logo" class="company-logo">' +
+        '<img src="/images/logo.png" alt="Company Logo" class="company-logo">' +
         '<h1>The English Kindergarten - TEK</h1>' +
         '<p>Villa No.19 Mansour Bin Talha St 652 - Doha, Qatar</p>' +
         '<p>Phone: 44829505</p>' +
@@ -83,9 +83,9 @@ function printBill(subId) {
         '<div class="invoice-footer">' +
         '<p>Thank you for choosing our daycare/preschool services.</p>' +
         '<!-- Add any additional footer information here -->' +
-        '<img src="' + baseUrl + 'DocumentsCopies/QR_Code.png" alt="QR Code" class="qr-code"/>' +
+        '<img src="/documentscopies/qr_code.png" alt="QR Code" class="qr-code"/>' +
         '</div></body></html>';
-
+         
     printWindow.document.write(billContent);
 
     // Print the window

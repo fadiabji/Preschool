@@ -14,7 +14,7 @@ namespace Preschool.Services
         }
         public async Task<IEnumerable<Subscription>> GetSubscriptions()
         {
-            return await _db.Subscriptions.Include(s => s.SubscriptionType).ToListAsync();
+            return await _db.Subscriptions.Include(s => s.SubscriptionType).Where(s => s.IsActive == true).OrderBy(s =>s.ExpireAt).ToListAsync();
         }
 
         public async Task<Subscription> GetSubscriptionById(int? id)

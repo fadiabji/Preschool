@@ -50,14 +50,22 @@
                                 <div class="dropdown-menu" aria-labelledby="adminDropdown">
                                     <a class="dropdown-item" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Classroom" asp-action="Index">Classrooms</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Subscriptions" asp-action="Index">Subscriptions</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="SubscriptionTypes" asp-action="Index">Subscription Types</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Assets" asp-action="Index">Assets</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Expenses" asp-action="Index">Expenses</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Teachers" asp-action="Index">Teacher</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Children" asp-action="Index">Childern</a>
                                 </div>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Invoices
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Expenses" asp-action="Index">Expenses</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Subscriptions" asp-action="Index">Subscriptions</a>
+                                </div>
+                            </li>
+
                         }
                         @if (User.IsInRole("Teacher") || User.IsInRole("Admin"))
                         {

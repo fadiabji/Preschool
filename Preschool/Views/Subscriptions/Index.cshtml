@@ -51,11 +51,11 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ExpireAt)
                 </td>
-                <td>
+                <td style="text-align:center; vertical-align: middle;">
                     @Html.DisplayFor(modelItem => item.PaymentComplete)
                 </td>
                 <td>
-                    @item.Child.FirstName @item.Child.LastName
+                    @item.Child.FullName
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SubscriptionType.Name)
