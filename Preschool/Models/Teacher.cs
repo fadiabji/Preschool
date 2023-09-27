@@ -10,11 +10,9 @@ namespace Preschool.Models
         public int Id { get; set; }
 
         [Required]
-        [PersonalData]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Required]
-        [PersonalData]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
@@ -23,7 +21,6 @@ namespace Preschool.Models
 
 
         [Required]
-        [PersonalData]
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
@@ -41,6 +38,8 @@ namespace Preschool.Models
         public virtual Classroom Classroom { get; set; }
 
         public virtual ICollection<DocumentsCopies> DocumentsImage { get; set; }
+
+
 
     }
 }

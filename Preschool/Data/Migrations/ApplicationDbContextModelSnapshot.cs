@@ -247,7 +247,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Assets");
+                    b.ToTable("Assets", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.Attendance", b =>
@@ -271,7 +271,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("ChildId");
 
-                    b.ToTable("Attendances");
+                    b.ToTable("Attendances", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.Child", b =>
@@ -311,7 +311,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("ClassroomId");
 
-                    b.ToTable("Childern");
+                    b.ToTable("Childern", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.ChildDocumentsCopy", b =>
@@ -334,7 +334,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("DocumentsCopyId");
 
-                    b.ToTable("ChildDocumentsCopies");
+                    b.ToTable("ChildDocumentsCopies", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.Classroom", b =>
@@ -359,7 +359,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Classrooms");
+                    b.ToTable("Classrooms", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.DocumentsCopies", b =>
@@ -386,7 +386,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("DocumentsImages");
+                    b.ToTable("DocumentsImages", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.Expense", b =>
@@ -413,7 +413,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Expenses");
+                    b.ToTable("Expenses", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.Subscription", b =>
@@ -448,7 +448,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("SubscriptionTypeId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.SubscriptionType", b =>
@@ -475,7 +475,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionTypes");
+                    b.ToTable("SubscriptionTypes", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.Teacher", b =>
@@ -510,7 +510,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("ClassroomId");
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Teachers", (string)null);
                 });
 
             modelBuilder.Entity("Preschool.Models.TeacherDocuemtnsCopy", b =>
@@ -533,7 +533,7 @@ namespace Preschool.Data.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("TeacherDocuemtnsCopies");
+                    b.ToTable("TeacherDocuemtnsCopies", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -18,5 +18,8 @@ namespace Preschool.Models
             [DataType(DataType.Date)]
             public DateTime DateOfBirth { get; set; }
 
+            public int TeacherId { get; set; }
+            public virtual Teacher Teacher { get; set; }
+
     }
 }

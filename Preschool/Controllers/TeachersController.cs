@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using Preschool.Data;
 using Preschool.Models;
 using Preschool.Models.ViewModels;
 using Preschool.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Preschool.Controllers
 {
@@ -22,15 +24,19 @@ namespace Preschool.Controllers
         private readonly IClassroomService _classroomService;
         private readonly IAttendanceService _attendanceService;
         private readonly IChildService _childService;
+        private UserManager<IdentityUser> _userManager;
+
         public TeachersController(ITeacherService teacherService,
                                   IClassroomService classroomService,
                                   IAttendanceService attendanceService,
-                                  IChildService childService)
+                                  IChildService childService,
+                                  UserManager<IdentityUser> userManager)
         {
             _teacherService = teacherService;
             _classroomService = classroomService;
             _attendanceService = attendanceService;
             _childService = childService;
+            _userManager = userManager;
         }
 
         // GET: Teacherren
@@ -62,6 +68,35 @@ namespace Preschool.Controllers
             }
 
         }
+
+        //public async Task<IActionResult> TeacherPage()
+        //{
+        //    try
+        //    {
+        //        if (User == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        if (User.IsInRole("Teacher"))
+        //        {
+        //            string email = User.Identity.Name;
+        //            var usr = _userManager.FindByEmailAsync(email).Result;
+
+        //        }
+        //        Teacher teacher = await _teacherService.GetTeacherById(id);
+        //        if (teacher == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        return View(teacher);
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+
+        //}
 
         public async Task<IActionResult> GetChildByClassRoom(int? teacherId)
         {
