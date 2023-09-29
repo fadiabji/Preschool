@@ -164,6 +164,10 @@ namespace Preschool.Data
         public DbSet<Expense> Expenses { get; set; }
 
 
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+
+
     }
 
 }

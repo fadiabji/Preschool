@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Preschool.Controllers
 {
-    [Authorize(Roles = ("Admin"))]
+    //[Authorize(Roles = ("Admin"))]
     //[Authorize]
     public class RoleController : Controller
     {

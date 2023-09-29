@@ -14,8 +14,8 @@ function printBill(subId) {
     // Get the HTML content of the order summary
     var childName = document.getElementById("childName").innerHTML;
 
-
     var info = document.getElementById(subId).innerHTML;
+
     // Create a new window for printing
     var printWindow = window.open('', '', 'height=600,width=800');
     
