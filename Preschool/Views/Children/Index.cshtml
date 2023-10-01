@@ -40,7 +40,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Classroom)
             </th>
-            <th></th>
+            @* <th></th> *@
             <th></th>
             <th></th>
             <th></th>
@@ -71,9 +71,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Classroom.Name)
             </td>
-            <td>
+            @* <td>
                     <a class="btn btn-sm btn-warning" asp-controller="Children" asp-action="ReNewSubscription" asp-route-id="@item.Id">Renew Subsc.</a>
-            </td>
+            </td> *@
             <td>
                     <a class="btn btn-sm  btn-info" asp-controller="Children" asp-action="ChildPage" asp-route-id="@item.Id">Child page</a>
             </td>

@@ -28,9 +28,24 @@
                 <span asp-validation-for="FatherName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="FatherTelephone" class="control-label"></label>
+                <input asp-for="FatherTelephone" class="form-control" />
+                <span asp-validation-for="FatherTelephone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="MotherName" class="control-label"></label>
                 <input asp-for="MotherName" class="form-control" />
                 <span asp-validation-for="MotherName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MotherTelephone" class="control-label"></label>
+                <input asp-for="MotherTelephone" class="form-control" />
+                <span asp-validation-for="MotherTelephone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nationality" class="control-label"></label>
+                <input asp-for="Nationality" class="form-control" />
+                <span asp-validation-for="Nationality" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
@@ -48,10 +63,10 @@
                 <select asp-for="ClassroomId" class="form-control" asp-items="ViewBag.ClassId"></select>
             </div>
 
-            <div class="form-group">
+           @*  <div class="form-group">
                 <label asp-for="SubscriptionTypeId" class="control-label"></label>
                 <select asp-for="SubscriptionTypeId" class="form-control" asp-items="ViewBag.SubscriptionTypeId"></select>
-            </div>
+            </div> *@
 
             <div class="form-group">
                 <label asp-for="DocumentCopies" class="control-label"></label>

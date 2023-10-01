@@ -10,7 +10,7 @@ namespace Preschool.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "The Invoice Number field is required.")]
-        public string InvoiceNumber { get; set; }
+        public string InvoiceNumber { get; set; } = new Random().Next(1000000, 9999999).ToString();
 
 
         [DataType(DataType.Date)]

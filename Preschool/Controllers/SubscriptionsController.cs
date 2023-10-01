@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Preschool.Data;
 using Preschool.Models;
+using Preschool.Models.ViewModels;
 using Preschool.Services;
 using SQLitePCL;
 
@@ -30,7 +31,22 @@ namespace Preschool.Controllers
         // GET: Subscriptions
         public async Task<IActionResult> Index()
         {
+            CheckSubscriptionsExpireDateToExpire();
             return View(await _subscriptionService.GetSubscriptions());
+        }
+
+
+        public void CheckSubscriptionsExpireDateToExpire()
+        {
+            var subs = _subscriptionService.GetSubscriptions().Result.ToList();
+            foreach (var sub in subs)
+            {
+                if (sub.ExpireAt.Date < DateTime.Now.Date)
+                {
+                    sub.IsActive = false;
+                    _subscriptionService.UpdateSubscriptionRegistration(sub);
+                }
+            }
         }
 
         // GET: Subscriptions/Details/5
@@ -117,7 +133,9 @@ namespace Preschool.Controllers
             if (ModelState.IsValid)
             {
                 try
+
                 {
+                    subscription.ExpireAt = subscription.CreatedAt.AddMonths(_subscriptionTypeService.GetSubscriptionTypeById(subscription.SubscriptionTypeId).Result.DurationMonth);
                     await Task.Run(()=>_subscriptionService.UpdateSubscriptionRegistration(subscription));  
                 }
                 catch (DbUpdateConcurrencyException)

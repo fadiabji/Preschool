@@ -25,10 +25,13 @@
                 @Html.DisplayNameFor(model => model.Child)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LogoFileAddress)
+                Total
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QRCodeFileAddress)
+                Payed
+            </th>
+            <th>
+                Left
             </th>
             <th></th>
         </tr>
@@ -46,13 +49,16 @@
                 @Html.DisplayFor(modelItem => item.Discount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Child.FatherName)
+                @Html.DisplayFor(modelItem => item.Child.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LogoFileAddress)
+                    @* @Html.DisplayFor(modelItem => item.CalculateTotal()) *@
             </td>
+                <td>
+                    @* @Html.DisplayFor(modelItem => item.CalculateSubtotal()) *@
+                </td>
             <td>
-                @Html.DisplayFor(modelItem => item.QRCodeFileAddress)
+                    @* @Html.DisplayFor(modelItem => item.CalculateBalance()) *@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
