@@ -34,6 +34,8 @@ builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IAttendanceService,AttendanceService >();
 builder.Services.AddScoped<IAssetsService,AssetsService>();
 builder.Services.AddScoped<IExpenseSevice, ExpenseService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+
 
 var app = builder.Build();
 

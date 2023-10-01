@@ -83,7 +83,7 @@ namespace Preschool.Controllers
 
         public void CheckSubscriptionsExpireDateToExpire(Child child)
         {
-            foreach(var sub in child.Subscriptions)
+            foreach (var sub in child.Subscriptions)
             {
                 if (sub.ExpireAt.Date < DateTime.Now.Date)
                 {
@@ -92,55 +92,55 @@ namespace Preschool.Controllers
                 }
             }
         }
-        public async Task<IActionResult> ReNewSubscription(int id)
-        {
-            try
-            {
-                var child = await _childrenService.GetChildById(id);
-                CheckSubscriptionsExpireDateToExpire(child);
-                if(child.Subscriptions.Any(s =>s.IsActive == true))
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    var renewsub = new ChildReNewSubscriptionVM { ChildId = id, ClassroomId = child.ClassroomId, SubscriptionTypId = child.Subscriptions.FirstOrDefault().SubscriptionTypeId };
-                    ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
-                    ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
-                    return View(renewsub);
-                }
-                
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //public async Task<IActionResult> ReNewSubscription(int id)
+        //{
+        //    try
+        //    {
+        //        var child = await _childrenService.GetChildById(id);
+        //        CheckSubscriptionsExpireDateToExpire(child);
+        //        if(child.Subscriptions.Any(s =>s.IsActive == true))
+        //        {
+        //            return RedirectToAction("Index");
+        //        }
+        //        else
+        //        {
+        //            var renewsub = new ChildReNewSubscriptionVM { ChildId = id, ClassroomId = child.ClassroomId, SubscriptionTypId = child.Subscriptions.FirstOrDefault().SubscriptionTypeId };
+        //            ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
+        //            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
+        //            return View(renewsub);
+        //        }
 
-        [HttpPost]
-        public async Task<IActionResult> ReNewSubscription(ChildReNewSubscriptionVM renewsub)
-        {
-            try
-            {
-                var child = await _childrenService.GetChildById(renewsub.ChildId);
-                child.ClassroomId = renewsub.ClassroomId;
-                child.Subscriptions.Add(new Subscription
-                                           {
-                                               SubscriptionTypeId = renewsub.SubscriptionTypId,
-                                               IsActive = true,
-                                               CreatedAt = DateTime.Now,
-                                               ExpireAt = DateTime.Now.AddMonths(_subscriptionTypeService.GetSubscriptionTypeById(renewsub.SubscriptionTypId).Result.DurationMonth),
-                                               PaymentComplete = true
-                                           });
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
-                await Task.Run(() => _childrenService.UpdateChildEnrollment(child));
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> ReNewSubscription(ChildReNewSubscriptionVM renewsub)
+        //{
+        //    try
+        //    {
+        //        var child = await _childrenService.GetChildById(renewsub.ChildId);
+        //        child.ClassroomId = renewsub.ClassroomId;
+        //        child.Subscriptions.Add(new Subscription
+        //                                   {
+        //                                       SubscriptionTypeId = renewsub.SubscriptionTypId,
+        //                                       IsActive = true,
+        //                                       CreatedAt = DateTime.Now,
+        //                                       ExpireAt = DateTime.Now.AddMonths(_subscriptionTypeService.GetSubscriptionTypeById(renewsub.SubscriptionTypId).Result.DurationMonth),
+        //                                       PaymentComplete = true
+        //                                   });
+
+        //        await Task.Run(() => _childrenService.UpdateChildEnrollment(child));
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         // GET: Children
         public async Task<IActionResult> Index()
@@ -172,7 +172,7 @@ namespace Preschool.Controllers
         public IActionResult Create()
         {
             ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
-            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
+            //ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
             return View();
         }
 
@@ -190,23 +190,25 @@ namespace Preschool.Controllers
                 FirstName = childVm.FirstName,
                 LastName = childVm.LastName,
                 MotherName = childVm.MotherName,
+                MotherTelephone = childVm.MotherTelephone,
+                FatherTelephone = childVm.FatherTelephone,
+                Nationality = childVm.Nationality,
                 FatherName = childVm.FatherName,
                 DateOfBirth = childVm.DateOfBirth,
                 EnrolDate = childVm.EnrolDate,
                 ClassroomId = childVm.ClassroomId
             };
-            child.Subscriptions.Add(new Subscription
-                                                    {
-                                                        SubscriptionTypeId = childVm.SubscriptionTypeId,
-                                                        IsActive = true,
-                                                        CreatedAt = DateTime.Now,
-                                                        ExpireAt = DateTime.Now.AddMonths(_subscriptionTypeService.GetSubscriptionTypeById(childVm.SubscriptionTypeId).Result.DurationMonth),
-                                                        PaymentComplete = true
-                                                    }) ;
+            //child.Subscriptions.Add(new Subscription
+            //                                        {
+            //                                            SubscriptionTypeId = childVm.SubscriptionTypeId,
+            //                                            IsActive = true,
+            //                                            CreatedAt = DateTime.Now,
+            //                                            ExpireAt = DateTime.Now.AddMonths(_subscriptionTypeService.GetSubscriptionTypeById(childVm.SubscriptionTypeId).Result.DurationMonth),
+            //                                            PaymentComplete = true
+            //                                        }) ;
 
             if (ModelState.IsValid && DocumentCopies != null)
             {
-
                 foreach (var img in DocumentCopies)
                 {
                     string fileName = img.FileName;
@@ -219,10 +221,7 @@ namespace Preschool.Controllers
                     }
                     child.DocumentsImage.Add(new DocumentsCopies { ImageFile = img.FileName });
                 }
-
-
                 await Task.Run(() => _childrenService.EnrollChild(child));
-
                 return RedirectToAction(nameof(Index));
             }
             return View(child);
@@ -235,7 +234,6 @@ namespace Preschool.Controllers
         // GET: Children/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-          
             var child = await _childrenService.GetChildById(id);
             if (child == null)
             {
@@ -247,18 +245,21 @@ namespace Preschool.Controllers
                 FirstName = child.FirstName,
                 LastName = child.LastName,
                 DateOfBirth = child.DateOfBirth,
+                MotherTelephone = child.MotherTelephone,
+                FatherTelephone = child.FatherTelephone,
+                Nationality = child.Nationality,
                 EnrolDate = child.EnrolDate,
                 FatherName = child.FatherName,
                 MotherName = child.MotherName,
                 ClassroomId = child.ClassroomId,
             };
-            childVm.SubscriptionTypeId = child.Subscriptions.Select(s => s.SubscriptionTypeId).FirstOrDefault();         
+            childVm.SubscriptionTypeId = child.Subscriptions.Select(s => s.SubscriptionTypeId).FirstOrDefault();
             foreach ( var docuemnt in child.DocumentsImage)
             {
                 childVm.DocumentCopies.Add(docuemnt.ImageFile);
             }
             ViewData["ClassId"] = new SelectList(_classroomService.GetClasses().Result, "Id", "Name");
-            ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
+            //ViewData["SubscriptionTypeId"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name");
 
             return View(childVm);
         }
@@ -276,13 +277,16 @@ namespace Preschool.Controllers
             child.LastName = childvm.LastName;
             child.FatherName = childvm.FatherName;
             child.MotherName = childvm.MotherName;
+            child.MotherTelephone = childvm.MotherTelephone;
+            child.FatherTelephone = childvm.FatherTelephone;
+            child.Nationality = childvm.Nationality;
             child.DateOfBirth = childvm.DateOfBirth;
             child.EnrolDate = childvm.EnrolDate;
             child.ClassroomId = childvm.ClassroomId;
             var oldChildDocuments = child.DocumentsImage.ToList();
 
 
-            child.Subscriptions.Where(s => s.ChildId == childvm.Id).ToList().ForEach(s => s.SubscriptionTypeId = childvm.SubscriptionTypeId);
+            //child.Subscriptions.Where(s => s.ChildId == childvm.Id).ToList().ForEach(s => s.SubscriptionTypeId = childvm.SubscriptionTypeId);
             if (id != child.Id)
             {
                 return NotFound();
