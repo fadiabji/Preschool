@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.Composition.Convention;
 
 namespace Preschool.Models
 {
@@ -20,7 +22,16 @@ namespace Preschool.Models
         [Required]
         public decimal Price { get; set; }
 
+        public virtual ICollection<Invoice> Invoices { get; set; }
+        public virtual ICollection<InvoiceSubscriptionType> InvoiceSubscriptionType { get; set; }
 
-        public virtual ICollection<Subscription> Supscriptions { get; set; }
+
+
+        public SubscriptionType()
+        {
+            Invoices = new List<Invoice>();
+
+            InvoiceSubscriptionType = new List<InvoiceSubscriptionType>();
+        }
     }
 }

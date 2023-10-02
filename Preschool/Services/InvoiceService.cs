@@ -22,7 +22,7 @@ namespace Preschool.Services
 
         public async Task<Invoice> GetInvoiceById(int? id)
         {
-            return await _db.Invoices.SingleOrDefaultAsync(a => a.Id == id);
+            return await _db.Invoices.FindAsync(id);
         }
 
         public async Task<IEnumerable<Invoice>> GetInvoices()

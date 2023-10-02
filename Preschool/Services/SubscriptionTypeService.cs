@@ -19,7 +19,7 @@ namespace Preschool.Services
 
         public async Task<SubscriptionType> GetSubscriptionTypeById(int? id)
         {
-            return await _db.SubscriptionTypes.SingleOrDefaultAsync(c => c.Id == id);
+            return await _db.SubscriptionTypes.FindAsync(id);
         }
 
 
