@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Preschool.Data;
@@ -18,10 +19,12 @@ namespace Preschool.Controllers
         private readonly IInvoiceService _invoiceService;
         private readonly IChildService _childService;
         private readonly ISubscriptionTypeService _subscriptionTypeService;
+        private readonly ApplicationDbContext _db;
 
 
-        public InvoicesController(IInvoiceService invoiceService, IChildService childService, ISubscriptionTypeService subscriptionTypeService)
+        public InvoicesController(ApplicationDbContext db ,IInvoiceService invoiceService, IChildService childService, ISubscriptionTypeService subscriptionTypeService)
         {
+            _db = db;
             _invoiceService = invoiceService;
             _childService = childService;
             _subscriptionTypeService = subscriptionTypeService;
@@ -31,6 +34,12 @@ namespace Preschool.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = await _invoiceService.GetInvoices();
+            foreach(var invoice in applicationDbContext)
+            {
+                invoice.CalculateTotal = CalculateTotal(invoice);
+                invoice.CalculatePayments = CalculatePayments(invoice);
+                invoice.CalculateBalance = CalculateBalance(invoice);
+            }
             return View(applicationDbContext);
         }
 
@@ -64,7 +73,7 @@ namespace Preschool.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(InvoiceVM invoiceVm)
+        public IActionResult Create(InvoiceVM invoiceVm)
         {
             var invoice = new Invoice()
             {
@@ -75,37 +84,109 @@ namespace Preschool.Controllers
                 QRCodeFileAddress = invoiceVm.QRCodeFileAddress,
                 LogoFileAddress = invoiceVm.LogoFileAddress,
                 InvoiceDate = invoiceVm.InvoiceDate,
+
             };
-            var test = invoiceVm.InvoiceItems;
-            var test1 = test[1];
-            string[] parts = test1.Split(',');
 
-            foreach (string part in parts)
+            AddInvoiceSubscriptonTypeToInvoice(invoiceVm, invoice);
+
+            if (ModelState.IsValid)
             {
-                int subscritpiontypeId = int.Parse(part);
-                if (invoice.InvoiceItems != null)
-                {
-                    invoice.InvoiceItems.Add(await _subscriptionTypeService.GetSubscriptionTypeById(subscritpiontypeId));
-                }
-                else
-                {
-                    invoice.InvoiceItems = new List<SubscriptionType>();
-                    invoice.InvoiceItems.Add(await _subscriptionTypeService.GetSubscriptionTypeById(subscritpiontypeId));
-                }
-            }
-
-                if (ModelState.IsValid)
-                {
-                await Task.Run(()=> _invoiceService.AddInvoice(invoice));
+                _invoiceService.AddInvoice(invoice);
+                AddPayment(invoiceVm.Payment, invoice);
+                //_invoiceService.UpdateInvoice(invoice);
                 return RedirectToAction(nameof(Index));
-                }
-            ViewData["ChildId"] = new SelectList(_childService.GetChildren().Result, "Id", "FullName", invoice.ChildId);
-            ViewData["InvoiceItems"] = new SelectList(_subscriptionTypeService.GetSubscriptionTypes().Result, "Id", "Name", invoice.InvoiceItems);
+             }
+
             return View(invoice);
         }
 
+        public  void AddInvoiceSubscriptonTypeToInvoice(InvoiceVM invoiceVm, Invoice invoice)
+        {
+            var test = invoiceVm.InvoiceItems;
+            var test1 = test[1];
+            string[] parts = test1.Split(',');
+            invoice.InvoiceSubscriptionType = new List<InvoiceSubscriptionType>();
+            foreach (string part in parts)
+            {
+                if (part != "")
+                {
+                    int subscritpiontypeId = int.Parse(part);
+                    
+                    var newItem = new InvoiceSubscriptionType()
+                    {
+                        SubscriptionTypeId = subscritpiontypeId,
+                        InvoiceId = invoiceVm.Id
+                    };
+                    invoice.InvoiceSubscriptionType.Add(newItem);
+                }
+                
+            }
+            _db.SaveChanges();
+        }
 
-     
+        public void AddPayment(decimal payment, Invoice invoice)
+        {
+            var addedPayment = new Payment()
+            {
+                Amount =payment,
+                PaymentDate = invoice.InvoiceDate,
+                InvoiceId = invoice.Id
+            };
+            _db.Payments.Add(addedPayment);
+            invoice.Payments.Add(addedPayment);
+            _db.SaveChanges();
+        }
+
+        public decimal CalculateSubtotal(Invoice invoice)
+        {
+            decimal subtotal = 0;
+            foreach (var item in invoice.InvoiceSubscriptionType)
+            {
+                //subtotal += item.Price;
+                subtotal += item.SubscriptionType.Price;
+            }
+            return subtotal;
+        }
+
+        public decimal CalculateTotal(Invoice invoice)
+        {
+            decimal subtotal = CalculateSubtotal(invoice);
+
+            // Apply discount if it exists
+            if (invoice.Discount.HasValue && invoice.Discount.Value > 0)
+            {
+                subtotal -= subtotal * invoice.Discount.Value;
+            }
+
+            return subtotal;
+        }
+
+
+
+        public decimal CalculatePayments(Invoice invoice)
+        {
+            decimal totalPayments = 0;
+            if (invoice.Payments != null)
+            {
+                foreach (var payment in invoice.Payments)
+                {
+                    totalPayments += payment.Amount;
+                }
+            }
+            return totalPayments;
+        }
+
+        public decimal CalculateBalance(Invoice invoice)
+        {
+            decimal total = CalculateTotal(invoice);
+
+            // Calculate the sum of payments made towards this invoice
+            decimal totalPayments = CalculatePayments(invoice);
+
+            // Calculate the remaining balance
+            return total - totalPayments;
+        }
+
 
 
         [HttpPost]

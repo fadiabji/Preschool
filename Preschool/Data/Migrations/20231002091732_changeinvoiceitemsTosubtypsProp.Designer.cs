@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Preschool.Data;
 
@@ -11,9 +12,11 @@ using Preschool.Data;
 namespace Preschool.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231002091732_changeinvoiceitemsTosubtypsProp")]
+    partial class changeinvoiceitemsTosubtypsProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,6 +27,21 @@ namespace Preschool.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("InvoiceSubscriptionType", b =>
+                {
+                    b.Property<int>("InvoicesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubscriptionTypesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("InvoicesId", "SubscriptionTypesId");
+
+                    b.HasIndex("SubscriptionTypesId");
+
+                    b.ToTable("InvoiceSubscriptionType");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -457,39 +475,11 @@ namespace Preschool.Data.Migrations
                     b.Property<string>("QRCodeFileAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SubscriptionTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ChildId");
 
-                    b.HasIndex("SubscriptionTypeId");
-
                     b.ToTable("Invoices");
-                });
-
-            modelBuilder.Entity("Preschool.Models.InvoiceSubscriptionType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubscriptionTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId");
-
-                    b.HasIndex("SubscriptionTypeId");
-
-                    b.ToTable("InvoiceSubscriptionTypes");
                 });
 
             modelBuilder.Entity("Preschool.Models.Payment", b =>
@@ -636,6 +626,21 @@ namespace Preschool.Data.Migrations
                     b.ToTable("TeacherDocuemtnsCopies");
                 });
 
+            modelBuilder.Entity("InvoiceSubscriptionType", b =>
+                {
+                    b.HasOne("Preschool.Models.Invoice", null)
+                        .WithMany()
+                        .HasForeignKey("InvoicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Preschool.Models.SubscriptionType", null)
+                        .WithMany()
+                        .HasForeignKey("SubscriptionTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -747,30 +752,7 @@ namespace Preschool.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Preschool.Models.SubscriptionType", null)
-                        .WithMany("Invoices")
-                        .HasForeignKey("SubscriptionTypeId");
-
                     b.Navigation("Child");
-                });
-
-            modelBuilder.Entity("Preschool.Models.InvoiceSubscriptionType", b =>
-                {
-                    b.HasOne("Preschool.Models.Invoice", "Invoice")
-                        .WithMany("InvoiceSubscriptionType")
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Preschool.Models.SubscriptionType", "SubscriptionType")
-                        .WithMany("InvoiceSubscriptionType")
-                        .HasForeignKey("SubscriptionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Invoice");
-
-                    b.Navigation("SubscriptionType");
                 });
 
             modelBuilder.Entity("Preschool.Models.Payment", b =>
@@ -793,7 +775,7 @@ namespace Preschool.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Preschool.Models.SubscriptionType", "SubscriptionType")
-                        .WithMany()
+                        .WithMany("Supscriptions")
                         .HasForeignKey("SubscriptionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -853,16 +835,12 @@ namespace Preschool.Data.Migrations
 
             modelBuilder.Entity("Preschool.Models.Invoice", b =>
                 {
-                    b.Navigation("InvoiceSubscriptionType");
-
                     b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Preschool.Models.SubscriptionType", b =>
                 {
-                    b.Navigation("InvoiceSubscriptionType");
-
-                    b.Navigation("Invoices");
+                    b.Navigation("Supscriptions");
                 });
 
             modelBuilder.Entity("Preschool.Models.Teacher", b =>

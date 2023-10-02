@@ -1,5 +1,7 @@
-﻿using Preschool.Models;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+using Preschool.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Preschool.Models
 {
@@ -23,7 +25,7 @@ namespace Preschool.Models
         public decimal? Discount { get; set; }
 
         // Navigation property for related invoice items
-        public virtual ICollection<SubscriptionType> InvoiceItems { get; set; }
+        public virtual ICollection<InvoiceSubscriptionType> InvoiceSubscriptionType { get; set; }
 
         // Collection of payments made towards this invoice
         public virtual ICollection<Payment> Payments { get; set; }
@@ -34,46 +36,22 @@ namespace Preschool.Models
 
         public string LogoFileAddress { get; set; }
         public string QRCodeFileAddress { get; set; }
-        public decimal CalculateSubtotal()
+
+
+        [NotMapped]
+        public decimal CalculateTotal { get; set; }
+        [NotMapped]
+        public decimal CalculatePayments { get; set; }
+        [NotMapped]
+        public decimal CalculateBalance { get; set; }
+
+
+
+        public Invoice()
         {
-            decimal subtotal = 0;
-            foreach (var item in InvoiceItems)
-            {
-                subtotal += item.Price;
-            }
-            return subtotal;
+            //SubscriptionTypes = new List<SubscriptionType>();
         }
 
-        public decimal CalculateTotal()
-        {
-            decimal subtotal = CalculateSubtotal();
-
-            // Apply discount if it exists
-            if (Discount.HasValue && Discount.Value > 0)
-            {
-                subtotal -= subtotal * Discount.Value;
-            }
-
-            return subtotal;
-        }
-
-        public decimal CalculateBalance()
-        {
-            decimal total = CalculateTotal();
-
-            // Calculate the sum of payments made towards this invoice
-            decimal totalPayments = 0;
-            if (Payments != null)
-            {
-                foreach (var payment in Payments)
-                {
-                    totalPayments += payment.Amount;
-                }
-            }
-
-            // Calculate the remaining balance
-            return total - totalPayments;
-        }
     }
 
 }

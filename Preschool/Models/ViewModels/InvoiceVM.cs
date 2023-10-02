@@ -22,11 +22,11 @@ namespace Preschool.Models.ViewModels
         [Range(0, 1, ErrorMessage = "Discount must be between 0 and 1.")]
         public decimal? Discount { get; set; }
 
-        // Navigation property for related invoice items
+       
         public List<string> InvoiceItems { get; set; }
 
-        // Collection of payments made towards this invoice
-        public virtual ICollection<Payment> Payments { get; set; }
+        
+        public decimal Payment { get; set; }
 
         [Required]
         public int ChildId { get; set; }
