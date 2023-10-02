@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using NuGet.Protocol.Core.Types;
 using Preschool.Data;
 using Preschool.Models;
 using Preschool.Models.ViewModels;
@@ -84,11 +85,9 @@ namespace Preschool.Controllers
                 QRCodeFileAddress = invoiceVm.QRCodeFileAddress,
                 LogoFileAddress = invoiceVm.LogoFileAddress,
                 InvoiceDate = invoiceVm.InvoiceDate,
-
             };
 
             AddInvoiceSubscriptonTypeToInvoice(invoiceVm, invoice);
-
             if (ModelState.IsValid)
             {
                 _invoiceService.AddInvoice(invoice);
@@ -123,13 +122,29 @@ namespace Preschool.Controllers
             }
             _db.SaveChanges();
         }
+        public async Task<IActionResult>  AddOtherPayment(int id)
+        {
+            var invoice = await _invoiceService.GetInvoiceById(id);
+            invoice.CalculateTotal = CalculateTotal(invoice);
+            invoice.CalculatePayments = CalculatePayments(invoice);
+            invoice.CalculateBalance = CalculateBalance(invoice);
+            return View(invoice);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddOtherPayment(AddOtherPaymentVM addOtherPaymentVM)
+        {
+            var invoice = await _invoiceService.GetInvoiceById(addOtherPaymentVM.InvoiceId);
+            AddPayment(addOtherPaymentVM.Amount, invoice);
+            return RedirectToAction(nameof(Index));
+        }
 
         public void AddPayment(decimal payment, Invoice invoice)
         {
             var addedPayment = new Payment()
             {
-                Amount =payment,
-                PaymentDate = invoice.InvoiceDate,
+                Amount = payment,
+                PaymentDate = DateTime.Now,
                 InvoiceId = invoice.Id
             };
             _db.Payments.Add(addedPayment);

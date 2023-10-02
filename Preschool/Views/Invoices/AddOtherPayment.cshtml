@@ -1,0 +1,123 @@
+﻿@model Preschool.Models.Invoice
+
+@{
+    ViewData["Title"] = "AddOtherPayment";
+}
+
+
+<h4>Invoice Details</h4>
+<hr />
+
+            <p>Childe Name: @Model.Child.FullName</p>
+            <p>Father Name: @Model.Child.FatherName</p>
+            <p>Father Telephone: @Model.Child.FatherTelephone</p>
+            <p>Invoice Number: @Model.InvoiceNumber</p>
+            <p>Invoice Date: @Model.InvoiceDate</p>
+            <p>Total :@Model.CalculateTotal</p>
+            <p>Left: @Model.CalculateBalance</p>
+            <p>Payed: @Model.CalculatePayments</p>
+            @* <p>@Model.Payments</p> *@
+
+<hr />
+<h3>All Payments </h3>
+            <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                            Id
+                    </th>
+                    <th>
+                            Amount
+                    </th>
+                    <th>
+                            Payment Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                    @foreach (var payment in Model.Payments)
+                    {
+                    <tr>
+                        <td>
+                            @payment.Id
+                        </td>
+                        <td>
+                            @payment.Amount
+                        </td>
+                        <td>
+                            @payment.PaymentDate
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            </table>
+<hr />
+            @* <p>@Model.InvoiceSubscriptionType</p> *@
+            <h3>All subsectiptions </h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Code
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+        @foreach (var subtype in Model.InvoiceSubscriptionType)
+                    {
+                        <tr>
+                            <td>
+                                @subtype.SubscriptionType.Id
+                            </td>
+                            <td>
+                                 @subtype.SubscriptionType.Name
+                            </td>
+                            <td>
+                                @subtype.SubscriptionType.Price
+                            </td>
+                            <td>
+                                @subtype.SubscriptionType.Description
+                        </tr>
+                    }
+                </tbody>
+            </table>
+<hr />
+<h3>Pay more:</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddOtherPayment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label" hidden></label>
+                <input type="number" class="form-control" name="InvoiceId" value="@Model.Id" hidden />
+                <span asp-validation-for="Id" class="text-danger"hidden></span>
+            </div>
+             <div class="form-group">
+                <label class="control-label" >Amount</label>
+                <input type="number" class="form-control" name="Amount" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+     
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+}
