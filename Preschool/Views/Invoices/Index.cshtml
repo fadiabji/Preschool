@@ -44,6 +44,7 @@
             <th></th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody id="myTable">
@@ -82,6 +83,9 @@
                 </td>
                 <td>
                     <a class="btn btn-sm btn-warning" asp-action="AddOtherPayment" asp-route-id="@item.Id">Add Payment</a>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-action="PrintInvoice" asp-route-id="@item.Id">Print</a>
                 </td>
             </tr>
         }

@@ -221,10 +221,23 @@ namespace Preschool.Controllers
             // You can return the added item's name or a partial view with additional details
             return Json(addedItem);
         }
-      
-     
 
-        
+        public async Task<IActionResult> PrintInvoice(int id)
+        {
+            var invoice = await _invoiceService.GetInvoiceById(id);
+            invoice.CalculateTotal = CalculateTotal(invoice);
+            invoice.CalculatePayments = CalculatePayments(invoice);
+            invoice.CalculateBalance = CalculateBalance(invoice);
+            return View(invoice);
+        }
+
+        [HttpPost]
+        public IActionResult PrintInvoice(AddOtherPaymentVM addOtherPaymentVM)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
 
         // GET: Invoices/Edit/5
