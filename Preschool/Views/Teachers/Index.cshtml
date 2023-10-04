@@ -36,8 +36,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Classroom)
             </th>
-            <th></th>
-            <th></th>
+            <th id="SkippTh"></th>
+            <th id="SkippTh"></th>
         </tr>
     </thead>
     <tbody id="myTable">
@@ -59,10 +59,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Classroom.Name) <i class="@item.Classroom.Icon"></i>
                 </td>
-                <td>
+                <td id="SkippTh">
                     <a class="btn btn-sm  btn-info" asp-controller="Teachers" asp-action="TeacherPage" asp-route-id="@item.Id">Teacher Page</a>
                 </td>
-                <td>
+                <td id="SkippTh">
                     <a class="btn btn-sm btn-primary"  asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>

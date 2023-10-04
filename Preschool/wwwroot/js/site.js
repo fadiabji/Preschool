@@ -107,9 +107,20 @@ function printPage() {
     document.getElementsByTagName('head')[0].appendChild(link);
 
     // Remove the print button from the printed page
-    var printButton = document.querySelector('.btn-secondary');
+    var printButton = document.querySelector('.btn');
     if (printButton) {
         printButton.style.display = 'none';
+    }
+
+    // Remove the print button from the printed page
+    var printButton = document.querySelector('.btn');
+    if (printButton) {
+        printButton.style.display = 'none';
+    }
+
+    var allbuttons = document.getElementById("SkippTh");
+    if (allbuttons) {
+        allbuttons.style.display = 'none';
     }
 
     // Trigger the print dialog
@@ -117,8 +128,9 @@ function printPage() {
 
     // Restore the original styles and show the print button
     link.parentNode.removeChild(link);
-    if (printButton) {
+    if (printButton && allbuttons) {
         printButton.style.display = 'block';
+        allbuttons.style.display = 'block';
     }
 }
 

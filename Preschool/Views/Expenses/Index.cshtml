@@ -33,7 +33,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.RegisterdAt)
             </th>
-            <th></th>
+            <th id="SkippTh"></th>
         </tr>
     </thead>
     <tbody id="myTable">
@@ -51,7 +51,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.RegisterdAt)
                 </td>
-                <td>
+                <td id="SkippTh">
                     <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
