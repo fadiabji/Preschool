@@ -22,6 +22,7 @@
     
     <!-- Include print styles -->
     <link rel="stylesheet" href="~/css/print-styles.css" media="print">
+    
 
 </head>
 <body>
@@ -95,9 +96,18 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer">
         <div class="container">
-            &copy; @DateTime.Now.Year - English-Kindergarten - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                <div class="col-md-12 ">
+                    <h5>The English Kindergarten - TEK</h5>
+                    <span>Villa No.19 Mansour Bin Talha St 652 - Doha, Qatar,</span>
+                    <span>Phone: 44829505, </span>
+                    <span>Mobile: 55116312, </span>
+                    <span>Email: info@tek.com.qa</span>
+                    <p>
+                    &copy; @DateTime.Now.Year - English-Kindergarten - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </p>
+                </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
