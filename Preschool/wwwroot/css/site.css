@@ -15,7 +15,10 @@ html {
 
 body {
     margin-bottom: 60px;
+    background-image: url('../images/background3.jpeg');
+    background-size: cover; /* Adjust the image size to cover the entire viewport */
 }
+
 
 /*subcard*/
 .subCardBody {
@@ -108,17 +111,27 @@ input:checked + .slider:before {
         border-radius: 50%;
     }
 
+.navbar-transparent {
+    background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value for transparency */
+}
+
 
 /*style home index page*/
 
 
 .homepageheader {
-    background-color: #3E9BB4;
+    background-color: #7CA7DA;
     color: #fff;
     text-align: center;
     padding: 20px;
 }
 
+.section {
+    background-color: #F48A9E;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
 h1 {
     font-size: 36px;
 }
@@ -127,14 +140,9 @@ h1 {
     max-width: 960px;
     margin: 0 auto;
     padding: 20px;
+    margin-top: 100px;
 }
 
-.section {
-    background-color: #fff;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 5px;
-}
 
 .image {
     max-height: 260px;
@@ -155,8 +163,18 @@ h1 {
     display: table-row;
 }
 
-main{
-   margin-bottom:150px;
+main {
+    margin-bottom: 300px;
 }
 
 
+.footer {
+    height: auto; /* Adjust the height as needed */
+    background-color: #7CA7DA; /* Optional: Set a background color for the footer */
+}
+
+    .footer p {
+        text-align: center;  
+        font-size: 18px;  
+        line-height: 0.5;
+    }
